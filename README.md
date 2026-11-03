@@ -8,6 +8,8 @@ This package contains the full attack–defense pipeline code, the per-run
 result tables (CSV) and reports (TXT), and an automated data-consistency
 checker that ties every numeric claim in the manuscript back to raw outputs.
 
+**DOI (Zenodo archive):** [10.5281/zenodo.23906936](https://doi.org/10.5281/zenodo.23906936)
+
 ---
 
 ## 1. What is included
