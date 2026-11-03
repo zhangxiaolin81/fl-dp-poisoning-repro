@@ -2,7 +2,7 @@
 
 Reproducibility package for the manuscript  
 **"Noise, not optimality: a capacity-to-budget diagnostic for stealthy poisoning in differentially private federated learning"**  
-(submitted to *Computer Networks*).
+(submitted to *Neurocomputing*).
 
 This package contains the full attack–defense pipeline code, the per-run
 result tables (CSV) and reports (TXT), and an automated data-consistency
