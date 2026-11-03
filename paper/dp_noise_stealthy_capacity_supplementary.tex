@@ -1,0 +1,710 @@
+\documentclass[final,1p,times]{elsarticle}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,multirow}
+\usepackage{graphicx}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue]{hyperref}
+\usepackage{placeins}
+% Relax float placement so figures/tables are not deferred to the end
+% of the document (where they would land inside the references).
+\renewcommand{\topfraction}{0.85}
+\renewcommand{\textfraction}{0.1}
+\renewcommand{\floatpagefraction}{0.85}
+\setcounter{topnumber}{4}
+\setcounter{totalnumber}{6}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
+\newtheorem{definition}{Definition}
+\newtheorem{remark}{Remark}
+\newcommand{\etal}{\emph{et al.}}
+\newcommand{\opt}{\mathrm{opt}}
+
+\begin{document}
+\begin{frontmatter}
+\title{Supplementary Material for\\
+``Noise, not optimality: a capacity-to-budget diagnostic for
+stealthy poisoning in differentially private federated learning''}
+\end{frontmatter}
+
+\section{Proofs}\label{app:proofs}
+%======================================================================
+\textbf{Setting.} In the isotropic regime ($h{=}0$) the benign update
+is $x_b=m+\xi$ with $\xi\sim\mathcal{N}(0,\sigma^2 I_d)$, and the
+attacker displaces one update by $\Delta$, $\|\Delta\|=\rho$. The
+server observes the statistic $s(x)=\|x-\hat m\|^2$, where $\hat m$ is
+the coordinate median of the benign population; for symmetric
+dispersion, $\hat m$ is consistent for $m$, so we condition on
+$\hat m=m$.
+
+\textbf{(i) Attacker statistic.} Writing
+$s(x_b+\Delta)=\sum_{j=1}^{d}(\xi_j+\Delta_j)^2$, each
+$(\xi_j+\Delta_j)^2/\sigma^2$ is a noncentral $\chi^2_1$ with
+noncentrality $\lambda_j=\Delta_j^2/\sigma^2$. Hence
+\[
+  \mathbb{E}[s]=\sigma^2\textstyle\sum_j(1+\lambda_j)=d\sigma^2+\rho^2,
+\]
+and $\mathrm{Var}[s]=\sigma^4\sum_j 2(1+2\lambda_j)=2\sigma^4
+d+4\sigma^2\rho^2$. In the stealthy regime $\rho^2\le d\sigma^2$ the
+second term is $O(1/d)$ relative to the first, so
+$\mathrm{std}[s]=\sigma^2\sqrt{2d}\,(1+o(1))$, a dominant-term
+(delta-method) argument; this is where the $\sqrt{d}$ dispersion in
+the denominator originates.
+
+\textbf{(ii) Benign statistic.} The same computation with $\Delta=0$
+gives $\mathbb{E}[s_b]=d\sigma^2$ and the same standard deviation to
+leading order. Therefore
+\[
+  \mathrm{sep}
+  =\frac{\mathbb{E}[s]-\mathbb{E}[s_b]}{\mathrm{std}[s]}
+  =\frac{\rho^2}{\sigma^2\sqrt{2d}}
+  =c\,\frac{\rho^2}{\sigma^2\sqrt{d}},
+  \qquad c=\tfrac{1}{\sqrt{2}},
+\]
+which is the separation formula with $w^2=\sigma^2$, and inverting
+$\mathrm{sep}=\mathrm{sep}^{*}$ yields the stealth-capacity bound with
+$\eta_{\max}=\sqrt{\mathrm{sep}^{*}/c}\;\sigma\,d^{1/4}$.
+
+\textbf{(iii) From surrogate to pipeline.} With a benign
+heterogeneity floor, Lemma~1 replaces $\sigma^2$ by
+$w^2=\sigma^2+h^2$, giving the two-regime law of
+Proposition~1; the isotropic slice $h=0$ recovers
+the theorem. The measured collapse constant $c=0.30$ is smaller than
+the surrogate value $1/\sqrt{2}$ because the median of $N$ finite
+benign samples absorbs part of the shift and the empirical threshold
+carries finite-sample dispersion (Remark~1); the
+functional form is unaffected, which is why the defender optimization
+calibrates the constant rather than deriving it. \hfill$\square$
+
+\textbf{Proof of Theorem~2.} The Lagrangian of
+the budget constraint separates across clients; stationarity gives
+$p_i=\min\{\eta_{\max,i},\alpha_i/(2\mu)\}$ \cite{boyd2004convex}, where
+$\mu\ge0$ is the Lagrange multiplier on the budget constraint; the
+constraint is \emph{slack} ($\mu{=}0$) exactly when $C<\Gamma$ (case~1, all
+caps saturated, budget slack). For case~2 the exchange argument holds
+only under the stated cap-saturation condition: moving a unit of
+budget to an unselected client $i$ improves the objective only if
+$i$'s first increment is uncapped (marginal value $\alpha_i)$
+\emph{and} exceeds the marginal value of the capped increment on the
+donor; when the donor is itself capped its marginal value is
+$\alpha_j$, so the rule favours the higher-$\alpha$ capped client, not
+the higher-$\alpha\eta_{\max}$ one. Bisection on $\mu$ (or the
+$\mu{=}0$ trivial branch) is the practical solver. \hfill$\square$
+
+\textbf{Proof of Theorem~3.} $D$ is non-decreasing in
+each $p_i$; for fixed $t$ the constraint $g\ge t$ is a monotone
+covering constraint, satisfied at minimum L2 cost by
+the covering-cost expression; maximizing $t$ subject to $B(t)\le\Gamma$ yields
+$t^\star$. \hfill$\square$
+
+\textbf{Proof of Theorem~4.} The attack is deployable iff
+$K\,\eta_{\max}^2(\sigma)\ge\Gamma$. Substituting the stealth-capacity bound
+and solving for $\sigma$ gives
+$\sigma\ge\sqrt{c\,\Gamma/(\mathrm{sep}^{*}K)}\;d^{-1/4}$, i.e.\
+$\sigma_{\max}=\Theta(\sqrt{\Gamma/K}\,d^{-1/4})$; since
+$\eta_{\max}$ is strictly increasing in $\sigma$, the stealthy-escape
+region grows monotonically with the privacy level. \hfill$\square$
+
+%======================================================================
+%======================================================================
+\section*{Supplementary Material}
+%======================================================================
+The following material supports the main text but is not required to
+follow the argument; it is provided for reproducibility and to document
+robustness checks.
+
+\subsection{Proxy framework: capacity law and allocator
+ablation}\label{supp:proxy}
+This section contains the proxy-level evaluation of the main text
+(Experimental Evaluation): setup, mechanism-faithful baselines, full
+$\sigma$/$\Gamma$ sweeps, and the allocator ablation.
+
+\subsubsection{Setup}
+Coordinate median; $d{=}1500$, $d_0{=}100$, $N{=}30$, $K{=}8$;
+heterogeneous leverage $\alpha_i\sim\mathrm{LogN}(0,0.8)$; capacities
+$\eta_{\max,i}=14.5\,\sigma\, u_i$, $u_i\sim U[0.5,1.5]$ (this is the
+isotropic-statistics regime of Theorem~1, \emph{instantiated}
+so that the allocator can be exercised under the analytically derived
+law). All baselines share
+the attacker's budget envelope $\sum p_i^2\le\Gamma$ and differ only in
+their information assumptions.
+
+\subsubsection{Baselines (mechanism-faithful proxies)}
+\begin{itemize}
+  \item \textbf{S21} \cite{shejwalkar2021turning}: DP-unaware; solves
+  water-filling with capacity misjudged at $\sigma_{\mathrm{ref}}{=}1$.
+  \item \textbf{W25} \cite{wang2025ldpfl}: noise-adaptive global
+  scaling $p_i=\min\{\kappa\sigma,\sqrt{\Gamma/K}\}$, client-blind---a
+  static reduction of Wang \etal's LDP-aware attack in which the
+  tail-aware direction refinement is replaced by the common direction
+  $-\hat g$ shared by all allocators, so that direction effects are
+  isolated and compared separately in the robustness section below.
+  \item \textbf{H25} \cite{hossain2025mpelm}: profile clipping
+  $p_i=\min\{\eta_i,\lambda\alpha_i\}$ without redirection.
+  \item \textbf{Q25} \cite{qiu2025budget}: uncapped
+  $p_i=\lambda\alpha_i$ (its global-budget allocation principle,
+  ported from non-FL data poisoning to our setting).
+\end{itemize}
+
+\subsubsection{Results (proxy capacity analysis)}
+The full $\sigma$ and $\Gamma$ sweeps over the six allocators
+(repository CSV; ablation in Fig.~\ref{fig:6}) underlie the findings
+below: each baseline collapses in a distinct regime; ours never does.
+
+\textbf{Findings (proxy).}
+(1) Distinct failure modes: S21 overestimates capacity at
+$\sigma<\sigma_{\mathrm{ref}}$ (total collapse at $\sigma{=}0.5$) and
+under-spends at $\sigma>1$ (plateau at $271$, $-44\%$ vs.\ ours at
+$\sigma{=}8$); Q25 collapses ($-67\%$ at $\Gamma{=}16000$);
+W25 under-spends at low $\sigma$; H25 loses $18\%$ at
+$\Gamma{=}16000$ (no redirection).
+(2) In the uncapped regime ($\sigma\ge4$, moderate $\Gamma$) Q25
+coincides with water-filling within $0.7\%$; the residual gap is
+the selection criterion ($\alpha$ vs.\ $\alpha\eta$), consistent with
+the ablation below.
+(3) Ablation (Fig.~\ref{fig:6}): removing capping costs $66.4\%$ on average,
+removing client selection $53.1\%$; at small $\Gamma$ pure-$\alpha$
+selection is (slightly) optimal; the $\alpha\eta$ criterion pays
+off when capping binds.
+(4) Scale robustness: re-running the full $\sigma$ sweep at
+$(N,K){=}(20,6),(30,8),(50,12),(100,20)$ ($10$ scenario seeds per cell,
+$\Gamma{=}500K$ so the per-client budget is held fixed) leaves every
+qualitative conclusion unchanged -- the collapse pattern is identical at
+all four scales (S21 and W25 fail in all six $\sigma$ cells; H25, Q25,
+and UNI in four), and OURS never falls below the best baseline by more
+than $3\%$ in any cell (the residual gap is the known uncapped-regime
+equivalence of Q25). The full grid is in the repository CSV.
+
+\begin{table}[!t]
+\centering\small
+\caption{Hyperparameters and protocol of the real FL pipeline (shared
+across FashionMNIST, MNIST, and CIFAR-10 unless noted).}
+\label{tab:hyper}
+\begin{tabular}{@{}p{0.28\linewidth}p{0.64\linewidth}@{}}
+\hline
+Model (FMNIST/MNIST) & $16{\times}3^2$ conv--maxpool--
+$32{\times}3^2$ conv--maxpool--FC; $d{=}20{,}490$ \\
+Model (CIFAR-10) & $32{\times}3^2$ conv--maxpool--
+$64{\times}3^2$ conv--maxpool--FC; $d{=}60{,}362$ \\
+Local training & SGD, lr $0.08$ (no momentum), batch $64$; $2$ local
+epochs (warm-up), $1$ local epoch (attack rounds) \\
+Warm-up & $60$ rounds, size-weighted FedAvg; $2{,}000$ validation
+samples; test acc.\ $0.846$ (FMNIST), $0.977$ (MNIST), $0.607$
+(CIFAR-10) \\
+Federation & $N{=}20$ clients of $300$--$900$ samples each; $K{=}6$
+compromised \\
+Noise scale & $\sigma_{\mathrm{ben}}$ = mean over coordinates of the
+per-coordinate std.\ of the benign update pool;
+$\sigma_{\mathrm{rel}}{=}\sigma/\sigma_{\mathrm{ben}}$ \\
+Detection & per-round threshold = mean ${+}\,1.645$ std.\ of the benign
+pool ($\approx 5\%$ FPR); flagged clients removed \\
+Grids & R1: $\sigma_{\mathrm{rel}}\in\{0.5,1,2,4,8,16,24,32,48,64\}$; R2/R2b:
+$\sigma_{\mathrm{rel}}\in\{0.5,1,2\}\times
+\kappa\in\{0.25,0.5,1,2\}$, $\Gamma{=}\kappa K\|\Delta\|^2$ \\
+Repetition & $5$ attack rounds $\times$ $10$ seeds per cell;
+$\eta_{\max,i}$ by bisection ($6$ trials) on the deployment detector \\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{figure}[!t]
+\centering
+\includegraphics[width=0.8\linewidth]{figures/fig6_ablation.pdf}
+\caption{Ablation on the proxy framework: hidden impact vs.\ budget
+$\Gamma$ for full water-filling and its degraded variants. Removing the
+capping term costs $66.4\%$ on average; removing client selection
+$53.1\%$; the budget-relaxation variant tracks full except at mid-range
+$\Gamma$.}
+\label{fig:6}
+\end{figure}
+
+
+\subsection{Central-DP calibration and the $\varepsilon(\sigma)$ mapping}\label{supp:eps}
+For the Gaussian mechanism with L2 sensitivity $\Delta$ (the full
+per-update norm) and per-coordinate noise scale $\sigma$, the analytic
+Gaussian mechanism gives $\varepsilon = 2\Delta^2\ln(1.25/\delta)/\sigma^2$
+at a fixed $\delta$~\cite{dwork2006calibrating}. In our pipeline
+$\Delta\approx0.36$ and $\sigma=\sigma_{\mathrm{rel}}\cdot0.0019$, so at
+the studied $\sigma_{\mathrm{rel}}\in\{0.5,\dots,16\}$ the per-round
+$\varepsilon\gg1$: the noise is calibrated to the \emph{per-coordinate}
+detection scale rather than to a meaningful per-update DP guarantee, and
+we therefore demonstrate the detection-masking \emph{mechanism} at sub-DP
+noise scales (a defender requiring $\varepsilon\ll1$ would need $\sigma$
+deep in the noise-dominated regime, compounding the utility loss). We
+report $\varepsilon(\sigma)$ alongside $\sigma$ with the real-pipeline
+capacity probes. Under \emph{true} central-DP-on-the-aggregate (noise
+added only after aggregation) the server could run detection on the clean
+pre-noise aggregate and the masking term would vanish; all results are
+therefore statements about the per-update noise model. That regime is not
+a strawman: robust aggregators are nonlinear, so DP-on-the-aggregate does
+not compose with them---the coordinate median is not a low-sensitivity
+query, and noise added after it is not a calibrated DP
+mechanism---whereas deployments that stack DP with robust aggregation
+noise client updates before the aggregator, as in client-level DP
+training~\cite{mcmahan2018dp} and per-client auditing or adaptive-clipping
+pipelines; the main text flags the boundary explicitly wherever a
+conclusion depends on it.
+
+\subsection{Robustness: attack direction, aggregation rule, adaptive
+attacker, and a third dataset (R2c--R5)}\label{sec:robust}
+\subsubsection{R2c: robustness to attack-direction sophistication (SOTA attacks)}
+\label{sec:r2c}
+All allocators above inject along a single default direction, the
+negative validation gradient $\hat g$ (gradient-ascent on loss), the
+standard model-poisoning direction. We therefore test robustness against a
+\emph{stronger, aggregator-tailored} attack direction, closing with a
+head-to-head against the state-of-the-art optimal/tailored attacks.
+
+We instantiate, inside the same pipeline, the attack directions of
+Shejwalkar and Houmansadr (NDSS 2021)~\cite{shejwalkar2021turning}, which are
+also the mechanism-level embodiments of the two adjacent works we compare
+against:
+\begin{itemize}
+  \item \texttt{shej\_sign} --- coordinate sign of the benign aggregate
+  (the sign-flip direction of Shejwalkar's AGR-tailored attack, which
+  targets median-type aggregators; it is also the closest static
+  mechanism-level proxy for the tail-aware adaptive directions of
+  Wang et al.'s LDPFL-Attack~\cite{wang2025ldpfl});
+  \item \texttt{shej\_std} --- benign coordinate variance weighting
+  (Shejwalkar's variance-tailored direction);
+  \item \texttt{shej\_unit} --- the benign reference unit vector
+  (Shejwalkar's AGR-agnostic direction);
+  \item \texttt{grad} --- our default $-\hat g$.
+\end{itemize}
+The three Shejwalkar directions are extracted from the authors' official
+NDSS 2021 implementation (\texttt{our\_attack\_median}).
+Each direction is held to the same DP-masked stealth cap
+$\eta_{\max,i}$ (recomputed per direction with the same probing
+protocol and the same attacker information requirements as the default
+direction, so switching direction changes no information assumption;
+Hossain's rule of hiding the
+attack within the DP-noise envelope~\cite{hossain2025mpelm} is the same cap, already used by
+all allocators). We re-run OURS (water-filling) and Q25 (uncapped budget,
+the frontier occupant on CIFAR-10) under all four directions across the
+same $\sigma\in\{0.5,1,2\}$, $\kappa\in\{0.5,2\}$, $10$ seeds.
+
+\emph{Finding (direction does not rescue stealth-aware optimality in the
+capacity-bound regime).} The tailored directions are nearly orthogonal to
+$-\hat g$ (inner product $0.08$--$0.18$), so they are a genuine
+alternative, yet they do not move OURS onto the CIFAR-10
+stealthy-damage frontier. Across the $24$ cells
+($4$ directions $\times 3$ $\sigma$ $\times 2$ $\kappa$), the uncapped
+Q25 allocator inflicts strictly larger raw damage than OURS in $19$ cells;
+OURS wins in only $5$, and \emph{all $5$ OURS wins occur at
+$\kappa{=}2$ (loose budget)} where the stealth cap $\eta_{\max}$ is the
+sole binding constraint (Table~\ref{tab:dirsens}, Fig.~\ref{fig:9}). The
+binding constraint is therefore the \emph{per-client capacity} $C$, not
+the attack direction. Conversely, the T3 monotonicity (frontier damage
+$\uparrow$ with $\sigma$) is reproduced under every direction: the
+best-attacker damage rises monotonically
+$0.0187\!\to\!0.0210\!\to\!0.0274$ for $\sigma{=}\{0.5,1,2\}$, and three
+of four directions are individually monotone. The fourth,
+\texttt{shej\_sign}, shows a shallow dip at $\sigma{=}1$: per-seed drops
+there are $\le 0.003$ pp under both OURS and Q25, and the effect size
+versus $\sigma{=}2$ is $<0.005$ pp ($95\%$ CI width $<0.02$ pp), although
+the paired Wilcoxon contrast is nominally significant at $n{=}5$ seeds in
+all four (strategy,$\kappa$) contrasts ($p{=}0.002$--$0.049$); the
+contrast versus $\sigma{=}0.5$ is significant in only $1$ of $4$
+contrasts. We therefore read the dip as a noise-scale wiggle, not a
+structural sub-$\epsilon$ feature.
+The conclusion is robust to attack sophistication: the capacity-bound
+regime is a property of the joint-defense geometry, not of a weak default
+direction. (A faithful full re-implementation of Wang's surrogate-trained
+LLRA and Hossain's RL privacy-level selector is left to future work; their
+\emph{mechanisms} are covered by the directions above and the
+$\eta_{\max}$ cap, which is Hossain's hide-within-the-noise rule.)
+
+\subsubsection{R3: robustness to the aggregation rule}
+\label{sec:r3}
+Theory and measurement so far use coordinate-median aggregation and
+median-based detection. We swap the aggregation rule inside the same
+CIFAR-10 pipeline: coordinate median, Trimmed-Mean~\cite{yin2018}
+($\beta{=}0.2$), and Krum~\cite{blanchard2017} ($f{=}6$), each with its
+natural detection statistic (distance to the aggregate; Krum's
+neighbor-discrepancy score), and re-probe the per-client stealthy
+capacity $\eta_{\max}(\sigma)$ over
+$\sigma_{\mathrm{rel}}\in\{0.5,\dots,16\}$ (no local training required;
+Fig.~\ref{fig:10}). As a modern robust-aggregation baseline we add
+FLAME~\cite{allouah2023flame} (iterative cosine filtering around the
+coordinate median, accepted-set averaging, adaptive noise
+$\delta_m{=}\lVert m\rVert/(f\sqrt d)$), scored with its natural
+cosine-discrepancy statistic at the same $5\%$ benign FPR.
+
+\emph{Finding (level changes; floor regime and $C/\Gamma$ boundary preserved).} All three aggregators
+exhibit the floor of Proposition~1: the median
+client's $\eta_{\max}$ is flat at $\eta_{\mathrm{f}}\approx1.15$--$1.23$
+(variation $<7\%$) and the aggregate capacity in the floor regime is
+$C=8.2$--$9.1$, i.e.\ the capacity-bound verdict $C/\Gamma<1$ is
+aggregator-invariant. The crossover scale $\sigma_c$, however, is
+aggregator-dependent: the median detector recovers
+($\sigma_c{\approx}19$, $R^2{=}0.97$), Trimmed-Mean recovers more
+slowly ($\sigma_c{\approx}27$, $R^2{=}0.74$), and Krum remains
+floor-dominated throughout the probed window ($\sigma_c>16$); the lower
+$R^2{=}0.74$ for Trimmed-Mean reflects a heavier-tailed score
+distribution under $\beta{=}0.2$ trimming in the floor regime, which
+widens the benign-threshold scatter and degrades the two-regime fit (a
+fit-quality caveat, not a structural departure). The
+mechanism is scale-equivariance: Krum's score statistic inflates
+uniformly with $\sigma$, so the benign threshold rises with the noise
+and the noise-dominated recovery is deferred beyond the probed window,
+so the second regime is \emph{not observed} for Krum in this window. This
+refines Section~7: swapping the aggregation
+rule rescales when noise starts to help the attacker, but does not
+change whether the floor regime and the $C/\Gamma$ boundary exist.
+
+\emph{FLAME inverts the picture.} The cosine-discrepancy statistic is
+insensitive to a perturbation along $-\hat g$ in this pipeline: benign
+updates (norms $0.8$--$2.7$) are highly cosine-aligned, and even a
+$\rho{=}12$ perturbation (norm $14.6$, five to eighteen times an entire
+benign update) moves the score only from $0.854$ to $0.887$, below the
+benign threshold $0.893$. The probed stealth capacities are therefore
+right-censored at the probe's upper bound ($\eta_i{=}12$ in $17$ of
+$36$ client-cells), the two-regime fit degrades ($R^2{=}0.31$,
+$\eta_{\mathrm{f}}{=}6.05$), and the implied aggregate capacity
+$C\ge53$ exceeds $\Gamma$ by an order of magnitude in \emph{both}
+budget regimes. The aggregator-invariance established above is thus a
+property of \emph{distance-to-aggregate} statistics: replacing distance
+by cosine similarity does not rescale the floor but removes the floor's
+detectability altogether, so the defender's $C/\Gamma$ verdict is not
+aggregator-invariant across detection-statistic families. FLAME's
+protection in this threat model reduces to its accepted-set averaging
+and adaptive noise, which the end-to-end grid below shows leaves the
+attack nearly unfiltered.
+
+We then re-run the allocation comparison (OURS, Q25, W25) under each
+of the three distance-to-aggregate aggregators across
+$\sigma_{\mathrm{rel}}\in\{0.5,1,2\}$,
+$\kappa\in\{0.25,2\}$, $5$ seeds ($270$ attack runs).
+
+\emph{Finding (attack grid: regimes and stealth costs are
+aggregator-invariant).} The budget-space structure of
+Section~7.2 reproduces under every aggregator: the capacity ratio
+is $C/\Gamma\approx3.7$--$4.1$ at $\kappa{=}0.25$ (deployable) versus
+$0.47$--$0.52$ at $\kappa{=}2$ (capacity-bound). Whenever the cap
+binds ($\kappa{=}2$), the uncapped Q25 allocator pays a uniformly
+higher stealth price than OURS: its malicious-flag rate exceeds ours by
+$8$--$28$ percentage points under all three aggregators, and its
+per-round detection rate reaches $84$--$100\%$ versus $64$--$92\%$ for
+OURS. Raw per-cell damage differences between allocators are small (max
+$|\Delta|=1.70$ pp across the $18$ (aggregator,$\sigma$,$\kappa$) cells, median
+$\approx 0.4$ pp), and paired Wilcoxon finds no cell significant at
+$\alpha{=}0.05$ ($n{=}5$ seeds, all $p{\ge}0.062$). A pointwise bootstrap
+additionally gives $4$ of $18$ nominal $95\%$ CIs that exclude $0$; these
+intervals are \emph{unadjusted} for the $18$ comparisons, and after Holm
+correction none remains significant, consistent with the Wilcoxon result. We
+therefore report magnitudes rather than claim strict
+seed-noise containment, and we do not claim per-cell damage-ordering invariance;
+the aggregator-invariant
+quantities are the regime boundary $C/\Gamma$ and the \emph{stealth
+cost of ignoring the cap}. Krum ($f{=}6$) neutralizes the absolute
+stakes (all drops within $\pm0.015$ of the no-attack control), yet the
+same stealth-cost ordering persists: a stronger aggregator shrinks the
+payoff matrix but does not change which allocator plays it better.
+
+\emph{FLAME end-to-end.}
+Re-running the same attack grid (OURS, Q25, W25;
+$\sigma_{\mathrm{rel}}\in\{0.5,1,2\}$, $\kappa\in\{0.25,2\}$, $5$ seeds)
+under FLAME confirms the probe: the cosine filter rarely fires
+(round-level detection $0$--$40\%$, mean $19\%$, versus $36$--$100\%$
+under the median rule in the same cells), FLAME's adaptive noise
+$\delta_m=\lVert m\rVert/(f\sqrt d)$ is negligible relative to the
+update scale, and the aggregation reduces to averaging over a highly
+aligned accepted set. The end-to-end damage is accordingly positive in
+\emph{every} cell ($0.013$--$0.128$): at $\kappa{=}0.25$ the accuracy
+drop is $0.013$--$0.039$ versus $-0.002$--$0.024$ under the median
+rule, and at $\kappa{=}2$ it is $0.094$--$0.128$ versus
+$-0.001$--$0.040$, i.e.\ up to two orders of magnitude larger
+damage in matched cells. FLAME is therefore a scope statement, not a rebuttal:
+modern robust aggregators built on \emph{cosine} statistics do not
+bound the stealthy capacity of per-update-DP-masked, median-aligned
+attacks, whereas the distance-to-aggregate family does -- at the price
+of the same two-regime exposure quantified above.
+
+%======================================================================
+\subsubsection{R4: robustness to an online adaptive attacker}
+\label{sec:r4}
+
+The stealth-constrained allocation in~Section~7.2 is derived against a
+\emph{static} attacker who fixes the per-client budget $p$ once from an
+offline estimate of $\{\eta_{\max,i}\}$ and never revises it. A natural
+objection (raised in the Limitations) is that a \emph{reactive} attacker,
+observing which malicious clients the defender flags each round, could
+reallocate the total budget $\Gamma$ toward survivors and recover the
+utility it would otherwise lose to detection. We close this gap with an
+ablation on the CIFAR-10 pipeline.
+
+\emph{Setup.} We keep the attack direction $-\hat g$ (identical to OURS)
+and the same detection oracle (coordinate-median, $1.645\sigma$
+threshold). The \textbf{static} attacker is exactly OURS: one
+water-filling solve at $r{=}0$, budget held fixed for all $5$ rounds. The
+\textbf{adaptive} attacker re-estimates, at every round $r{\ge}1$, the
+per-client stealth cap: clients flagged in the previous round are retired
+($\eta_i\!\leftarrow\!\eta_i/2$) and unflagged survivors are pushed toward
+their offline cap ($\eta_i\!\leftarrow\!\min(\hat\eta_i,1.15\eta_i)$);
+$\Gamma$ is then re-solved by water-filling over the surviving active set.
+We sweep $\sigma_{\mathrm{rel}}\in\{0.5,1,2\}$ and
+$\kappa\in\{0.25,2\}$ over $5$ seeds ($60$ attack runs per mode).
+
+\emph{Finding (adaptive cannot beat the static optimum).} In all six
+$(\sigma,\kappa)$ cells the adaptive attacker's accuracy drop is
+\emph{not larger} than the static one; the signed gain
+$g=\mathrm{drop}_{\mathrm{adapt}}-\mathrm{drop}_{\mathrm{static}}$ is
+negative throughout, ranging from $-0.0028$ to $-0.0201$
+(Fig.~\ref{fig:11}). Two regimes emerge. In the deployable regime
+($\kappa{=}0.25$, few detections) static and adaptive are within seed
+noise of each other ($|g|{\le}0.014$): with little to recover, adaptivity
+is moot. In the capacity-bound regime ($\kappa{=}2$, many detections) the
+adaptive attacker lowers its exposure, its per-round
+detection rate falling from $96\%$--$68\%$ (static) to $64\%$--$48\%$,
+but only by retiring flagged clients, which shrinks the active set and the
+damage it can deliver: its malicious-flag rate drops to $17\%$--$22\%$ and
+its accuracy drop turns non-positive (down to $-0.005$), i.e.\ the attack
+ceases to degrade accuracy. The net effect is zero or negative gain.
+
+\emph{Implication.} The static water-filling allocation is robust to an
+online reactive attacker, not merely to a static proxy. The reason is
+structural: the hard constraint is the capacity ceiling
+$C=\sum_i\eta_{\max,i}^2$, and reallocating $\Gamma$ among survivors
+cannot raise $C$; it can only trade detection exposure for potency, a
+trade that, under a fixed $\Gamma$, never recovers the budget lost to
+detection. This converts the Limitations caveat ``optimal against a static
+attacker'' into a verified claim: the optimum is adaptively robust, and the
+remaining open question is full online \emph{re-estimation} of
+$\{\eta_{\max,i}\}$ (not reallocation), which we leave to future work.
+
+%======================================================================
+
+\paragraph{S2. Robustness: attack-direction sensitivity}
+Table~\ref{tab:dirsens} and Fig.~\ref{fig:9} document the
+direction-sensitivity analysis of \S\ref{sec:r2c}.
+\begin{table}[!t]
+\centering\small
+\caption{Direction-sensitivity summary (CIFAR-10, $10$ seeds). Directions:
+unit=agnostic, sign=static sign-flip, std=variance-tailored. Frontier
+max drop = $\max$ over OURS/Q25 and $\kappa{\in}\{0.5,2\}$. Win counts
+are over the $6$ $(\sigma,\kappa)$ cells per direction.}
+\label{tab:dirsens}
+\scriptsize\setlength{\tabcolsep}{3pt}
+\begin{tabular}{lccc}
+\toprule
+Direction & Max drop @ $\sigma{=}.5/1/2$ & T3 mono? & Q25/OURS wins \\
+\midrule
+ours $-\hat g$            & 0.0187/0.0210/0.0274 & yes & 5 / 1 \\
+Shej unit                 & 0.0036/0.0060/0.0131 & yes & 3 / 3 \\
+Shej sign                 & 0.0040/0.0026/0.0117 & noisy & 5 / 1 \\
+Shej std   & 0.0049/0.0078/0.0128 & yes & 6 / 0 \\
+\emph{best attacker}& \emph{0.0187/0.0210/0.0274} & \emph{yes} & --- \\
+\bottomrule
+\end{tabular}
+\end{table}
+\begin{figure}[!t]
+\centering
+\includegraphics[width=0.95\linewidth]{figures/fig9_dirsens_cifar10.pdf}
+\caption{Direction-sensitivity analysis. \textbf{A}: T3 monotonicity
+reproduced under every attack direction; the best-attacker damage (black,
+max over directions) rises monotonically with $\sigma$. \textbf{B}:
+per-cell $(\text{Q25}-\text{OURS})$ raw damage; red = uncapped dominates
+($19/24$ cells), blue = stealth-capped water-filling wins (all $5$ at
+$\kappa{=}2$). The capacity-bound regime is attack-direction invariant.}
+\label{fig:9}
+\end{figure}
+\paragraph{S3. Robustness: aggregator swap}
+Fig.~\ref{fig:10} documents the aggregator-swap probe of \S\ref{sec:r3}.
+\begin{figure}[!t]
+\centering
+\includegraphics[width=0.95\linewidth]{figures/fig10_aggswap_cifar10.pdf}
+\caption{Aggregator-swap probe (CIFAR-10, R3-A). \textbf{A}: median
+client's $\eta_{\max}(\sigma_{\mathrm{rel}})$ under coordinate median,
+Trimmed-Mean ($\beta{=}0.2$), and Krum ($f{=}6$); all three are
+floor-dominated with $\eta_{\mathrm{f}}\approx1.15$--$1.23$.
+\textbf{B}: two-regime fits; the floor level is aggregator-invariant
+while the crossover $\sigma_c$ is not (Krum's scale-equivariant score
+defers recovery beyond the probed window).}
+\label{fig:10}
+\end{figure}
+
+\paragraph{S4. Robustness: online adaptive attacker}
+Fig.~\ref{fig:11} documents the adaptive-attacker ablation of \S\ref{sec:r4}.
+\begin{figure}[!t]
+\centering
+\includegraphics[width=\linewidth]{figures/fig11_adaptive.pdf}
+\caption{Online adaptive-attacker ablation (CIFAR-10, R4). Accuracy drop
+vs no-attack for the static (OURS) and adaptive attackers across DP levels
+and defense budgets. The signed gain $\Delta$ (adaptive $-$ static) is
+negative in every cell: a reactive attacker that reallocates $\Gamma$
+toward survivors cannot exceed the static optimum, because the capacity
+ceiling $C$ binds.}
+\label{fig:11}
+\end{figure}
+
+\subsubsection{R5: cross-dataset validation figure (MNIST)}
+The cross-dataset validation discussed in the R5 subsection of the
+main text is reproduced here.
+
+\begin{figure}[!t]
+\centering
+\includegraphics[width=\linewidth]{figures/fig12_crossdataset.pdf}
+\caption{Cross-dataset validation (R5). \textbf{A}: the two-regime
+$\eta_{\max}(\sigma)$ law (plateau at low $\sigma$, refinement at high
+$\sigma$) holds on both CIFAR-10 and MNIST; the naive
+$\eta\propto\sigma$ reference (dashed) is violated on both. \textbf{B}:
+under the $\kappa{=}2$ setting (capacity-bound for CIFAR-10) the accuracy
+drop is
+dataset-dependent (negligible on MNIST with $97.7\%$ clean accuracy,
+$0.2$--$0.8\%$ on CIFAR-10), yet the structural stealth-cost ordering
+of the allocators is preserved on both.}
+\label{fig:12}
+\end{figure}
+
+
+\clearpage
+\begin{thebibliography}{99}
+\bibitem{shejwalkar2021turning}
+V. Shejwalkar and A. Houmansadr, ``Manipulating the Byzantine: Optimizing
+model poisoning attacks and defenses for federated learning,'' in
+\emph{Proc. NDSS}, 2021.
+\bibitem{hossain2025mpelm}
+M.~T. Hossain, S. Badsha, H. La, S. Islam, and I. Khalil, ``Exploiting
+Gaussian noise variance for dynamic differential poisoning in federated
+learning,'' \emph{IEEE Trans.\ Artificial Intelligence}, vol.~6, no.~11,
+pp. 2922--2939, Nov. 2025, doi:10.1109/TAI.2025.3540030.
+\bibitem{wang2025ldpfl}
+Z. Wang, W. Tong, T. Han, H. Chen, T. Zhang, Y. Mao, and S. Zhong, ``On
+evaluating the poisoning robustness of federated learning under local
+differential privacy,'' arXiv:2509.05265, 2025. The code repository
+announced in the paper (\url{https://github.com/ZiJW/LDPFL-Attack}) is
+no longer publicly accessible as of Oct.\ 2026.
+\bibitem{qiu2025budget}
+J. Qiu, Y. Zhao, and J. Li, ``Optimal perturbation budget allocation for
+data poisoning in offline reinforcement learning,'' arXiv:2512.08485,
+Dec. 2025.
+\bibitem{mcmahan2017}
+H.~B. McMahan \etal, ``Communication-efficient learning of deep networks
+from decentralized data,'' in \emph{Proc. AISTATS}, 2017.
+\bibitem{blanchard2017}
+P. Blanchard \etal, ``Machine learning with adversaries: Byzantine
+tolerant gradient descent,'' in \emph{Proc. NeurIPS}, 2017.
+\bibitem{allouah2023flame}
+R. Allouah, A. Farhadkhani, R. Guerraoui, N. Gupta, R. Pinot, and
+J. Stephan, ``Fixing by mixing: A recipe for optimal byzantine ML under
+heterogeneity,'' in \emph{Proc. ICML}, 2023.
+\bibitem{yin2018}
+D. Yin \etal, ``Byzantine-robust distributed learning: Towards optimal
+statistical rates,'' in \emph{Proc. ICML}, 2018.
+\bibitem{fang2020local}
+M. Fang, X. Cao, J. Jia, and N.~Z. Gong, ``Local model poisoning attacks
+to Byzantine-robust federated learning,'' in \emph{Proc. USENIX Security
+Symposium}, 2020.
+\bibitem{abadi2016}
+M. Abadi \etal, ``Deep learning with differential privacy,'' in
+\emph{Proc. CCS}, 2016.
+\bibitem{kairouz2021advances}
+P. Kairouz \etal, ``Advances and open problems in federated learning,''
+\emph{Foundations and Trends in Machine Learning}, vol.~14, no.~1--2,
+pp. 1--210, 2021.
+\bibitem{li2020federated}
+T. Li, A.~K. Sahu, A. Talwalkar, and V. Smith, ``Federated learning:
+Challenges, methods, and future directions,'' \emph{IEEE Signal
+Processing Magazine}, vol.~37, no.~3, pp. 50--60, 2020.
+\bibitem{mothukuri2021survey}
+V. Mothukuri, R.~M. Parre\~no, S. Gharehbaghi, H.~M. Huang, and Y. Si,
+``A survey on security and privacy of federated learning,'' \emph{Future
+Generation Computer Systems}, vol.~115, pp. 619--640, 2021.
+\bibitem{biggio2012poisoning}
+B. Biggio, B. Nelson, and P. Laskov, ``Poisoning attacks against
+support vector machines,'' in \emph{Proc. ICML}, 2012.
+\bibitem{meizhu2015teaching}
+S. Mei and X. Zhu, ``Using machine teaching to identify optimal
+training-set attacks on machine learners,'' in \emph{Proc. AAAI}, 2015.
+\bibitem{biggio2018wild}
+B. Biggio and F. Roli, ``Wild patterns: Ten years after the rise of
+adversarial machine learning,'' \emph{Pattern Recognition}, vol.~84,
+pp. 317--331, 2018.
+\bibitem{bhagoji2019analyzing}
+A.~N. Bhagoji, S. Chakraborty, P. Mittal, and S. Calo, ``Analyzing
+federated learning through an adversarial lens,'' in \emph{Proc. ICML},
+2019.
+\bibitem{bagdasaryan2020backdoor}
+E. Bagdasaryan, A. Veit, Y. Hua, D. Estrin, and V. Shmatikov, ``How to
+backdoor federated learning,'' in \emph{Proc. AISTATS}, 2020.
+\bibitem{xie2020dba}
+C. Xie, K. Huang, P.-Y. Chen, and B. Li, ``DBA: Distributed backdoor
+attacks against federated learning,'' in \emph{Proc. ICLR}, 2020.
+\bibitem{sun2019can}
+Z. Sun, P. Kairouz, and A.~T. Suresh, ``Can you really backdoor
+federated learning?'' arXiv:1911.07963, 2019.
+\bibitem{mhamdi2018hidden}
+E.~M. El Mhamdi, R. Guerraoui, and S. Rouault, ``The hidden
+vulnerability of distributed learning in Byzantium,'' in
+\emph{Proc. ICML}, 2018.
+\bibitem{bernstein2018signsgd}
+J. Bernstein, Y.-X. Wang, K. Azizzadenesheli, and A. Anandkumar,
+``signSGD: With majority vote is fast and error tolerant,'' in
+\emph{Proc. ICLR}, 2018.
+\bibitem{cao2021fltrust}
+X. Cao, M. Fang, J. Liu, and N.~Z. Gong, ``FLTrust: Byzantine-robust
+federated learning via trust bootstrapping,'' in \emph{Proc. NDSS},
+2021.
+\bibitem{nguyen2022flame}
+T.~D. Nguyen \etal, ``FLAME: Taming backdoors in federated learning,''
+in \emph{Proc. NeurIPS}, 2022.
+\bibitem{xu2024minvar}
+H. Xu and T. Shu, ``Defending against model poisoning attack in
+federated learning: A variance-minimization approach,'' \emph{Journal
+of Information Security and Applications}, vol.~82, art.~103744, 2024.
+\bibitem{xu2024agnostic}
+H. Xu and T. Shu, ``Attack-model-agnostic defense against model
+poisonings in distributed learning,'' \emph{Journal of Information
+Security and Applications}, vol.~82, 2024.
+\bibitem{luong2024fedlsae}
+T.~D. Luong, V.~M. Tien, N.~H. Quyen, D.~T.~T. Hien, P.~T. Duy, and
+V.-H. Pham, ``Fed-LSAE: Thwarting poisoning attacks against federated
+cyber threat detection system via autoencoder-based latent space
+inspection,'' \emph{Journal of Information Security and Applications},
+vol.~87, art.~103916, 2024.
+\bibitem{mcmahan2018dp}
+H.~B. McMahan, D. Ramage, K. Talwar, and L. Zhang, ``Learning
+differentially private recurrent language models,'' in \emph{Proc.
+ICLR}, 2018.
+\bibitem{geyer2017dp}
+R.~C. Geyer, T. Klein, and M. Nabi, ``Differentially private
+multi-client federated learning,'' arXiv:1712.07557, 2017.
+\bibitem{dwork2006calibrating}
+C. Dwork, F. McSherry, K. Nissim, and A. Smith, ``Calibrating noise to
+sensitivity in private data analysis,'' in \emph{Proc. TCC}, 2006.
+\bibitem{dwork2014algorithmic}
+C. Dwork and A. Roth, ``The algorithmic foundations of differential
+privacy,'' \emph{Foundations and Trends in Theoretical Computer
+Science}, vol.~9, no.~3--4, pp. 211--407, 2014.
+\bibitem{bonawitz2017practical}
+K. Bonawitz \etal, ``Practical secure aggregation for privacy-preserving
+machine learning,'' in \emph{Proc. CCS}, 2017.
+\bibitem{song2019privacy}
+L. Song, R. Shokri, and P. Mittal, ``Privacy risks of securing machine
+learning models against adversarial examples,'' in \emph{Proc. IEEE
+Symposium on Security and Privacy}, 2019.
+\bibitem{boyd2004convex}
+S. Boyd and L. Vandenberghe, \emph{Convex Optimization}. Cambridge
+University Press, 2004.
+\bibitem{huber1964robust}
+P.~J. Huber, ``Robust estimation of a location parameter,'' \emph{Annals
+of Mathematical Statistics}, vol.~35, no.~1, pp. 73--101, 1964.
+\bibitem{tambe2011security}
+M. Tambe, \emph{Security and Game Theory: Algorithms, Deployed Systems,
+Lessons Learned}. Cambridge University Press, 2011.
+\bibitem{zhou2024roppfl}
+H. Zhou, Y. Zheng, and X. Jia, ``Towards robust and privacy-preserving
+federated learning in edge computing,'' \emph{Computer Networks},
+vol.~243, art.~110321, 2024, doi:10.1016/j.comnet.2024.110321.
+\bibitem{zhao2025fedmp}
+K. Zhao, L. Wang, F. Yu, B. Zeng, and Z. Pang, ``FedMP: A multi-pronged
+defense algorithm against Byzantine poisoning attacks in federated
+learning,'' \emph{Computer Networks}, vol.~257, art.~110990, 2025,
+doi:10.1016/j.comnet.2024.110990.
+\bibitem{liu2025antidotefl}
+Y. Liu, H. Zhang, M. Wang, Q. Xie, and Z. Sun, ``AntidoteFL: Enhancing
+defense against poisoning attacks in federated learning,'' \emph{Computer
+Networks}, vol.~269, art.~111427, 2025, doi:10.1016/j.comnet.2025.111427.
+\end{thebibliography}
+
+\end{document}
