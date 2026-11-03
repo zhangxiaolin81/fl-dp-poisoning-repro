@@ -4,7 +4,7 @@
 % Target: Computer Networks (Elsevier), elsarticle [final,1p,times]
 %======================================================================
 \documentclass[final,1p,times]{elsarticle}
-\journal{Computer Networks}
+\journal{Neurocomputing}
 \usepackage{amsmath,amssymb,amsthm,mathtools}
 \usepackage{booktabs,multirow}
 \usepackage{graphicx}
@@ -65,7 +65,8 @@ order-statistic allocation attains the same median shift in the
 single-round scalar setting for $4.4$--$1600\times$ less budget, yet its
 end-to-end backdoor gain is statistically null. The contribution is
 therefore the diagnostic and its mechanism, not allocator dominance:
-$C/\Gamma$ is a pre-deployment tool for tuning privacy under poisoning
+$C/\Gamma$ is a pre-deployment tool, computable by the server from
+historical update statistics, for tuning privacy under poisoning
 threats; under central DP applied only to the aggregate the masking
 channel vanishes.
 \end{abstract}
@@ -1245,7 +1246,11 @@ $C/\Gamma{>}1$) the
   The order-statistic allocator (OSA) is maximally stealthy yet its
   end-to-end backdoor gain is null (Table~\ref{tab:osae2e}); a
   deployable, margin-tight setting would be needed to observe OURS's
-  frontier advantage.
+  frontier advantage. The null result is itself diagnostic: OSA acts as
+  a probe separating two distinct attack objectives---shifting aggregate
+  influence statistics and changing decision behavior---so an audit keyed
+  to a single damage measure can misjudge allocator risk in either
+  direction.
   \item \textbf{Scope of validity.}\label{sec:aggr-swap} The proxy
   framework (Supplementary Material) \emph{instantiates} the capacity law
   and optimizer under the isotropic regime of T1 (a self-consistency
