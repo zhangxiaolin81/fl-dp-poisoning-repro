@@ -1,0 +1,12 @@
+R1 真实管线 η_max(σ)（T1 验证, cifar10）
+ sigma_rel= 0.50  eta_max=1.006 unit_norms  eta/sigma=2.012  (1.1s)
+ sigma_rel= 1.00  eta_max=1.082 unit_norms  eta/sigma=1.082  (1.1s)
+ sigma_rel= 2.00  eta_max=1.207 unit_norms  eta/sigma=0.604  (1.2s)
+ sigma_rel= 4.00  eta_max=1.325 unit_norms  eta/sigma=0.331  (0.7s)
+ sigma_rel= 8.00  eta_max=1.517 unit_norms  eta/sigma=0.190  (0.7s)
+ sigma_rel=16.00  eta_max=2.302 unit_norms  eta/sigma=0.144  (0.6s)
+ sigma_rel=24.00  eta_max=3.490 unit_norms  eta/sigma=0.145  (0.6s)
+ sigma_rel=32.00  eta_max=4.718 unit_norms  eta/sigma=0.147  (0.6s)
+ sigma_rel=48.00  eta_max=6.841 unit_norms  eta/sigma=0.143  (0.6s)
+ sigma_rel=64.00  eta_max=8.812 unit_norms  eta/sigma=0.138  (0.6s)
+ eta/σ 近似常数（比值极差 14.61）→ η_max ∝ σ 在真实模型上 不成立（两段式精化生效）

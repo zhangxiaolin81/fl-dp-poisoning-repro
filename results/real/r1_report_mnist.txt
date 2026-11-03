@@ -1,0 +1,5 @@
+R1 真实管线 η_max(σ)（T1 验证, mnist）
+ sigma_rel= 0.50  eta_max=1.429 unit_norms  eta/sigma=2.859  (0.2s)
+ sigma_rel= 1.00  eta_max=1.526 unit_norms  eta/sigma=1.526  (0.2s)
+ sigma_rel= 2.00  eta_max=1.615 unit_norms  eta/sigma=0.808  (0.2s)
+ eta/σ 近似常数（比值极差 3.54）→ η_max ∝ σ 在真实模型上 不成立（两段式精化生效）

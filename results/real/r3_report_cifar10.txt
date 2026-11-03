@@ -1,0 +1,547 @@
+==========================================================================================
+ R3-A：聚合器替换下的 η_max(σ) 两段式形状检验（无训练，探测）
+==========================================================================================
+------------------------------------------------------------------------------------------
+ aggregator = median
+   σ_rel=  0.5  η_i=['0.06', '1.63', '0.70', '1.58', '1.62', '0.06']  C=Ση²=8.29
+   σ_rel=  1.0  η_i=['0.06', '1.64', '0.72', '1.60', '1.62', '0.06']  C=Ση²=8.40
+   σ_rel=  2.0  η_i=['0.13', '1.64', '0.77', '1.61', '1.62', '0.06']  C=Ση²=8.52
+   σ_rel=  4.0  η_i=['0.14', '1.65', '0.85', '1.62', '1.62', '0.06']  C=Ση²=8.73
+   σ_rel=  8.0  η_i=['0.48', '1.67', '0.99', '1.62', '1.54', '0.06']  C=Ση²=8.97
+   σ_rel= 16.0  η_i=['1.22', '1.49', '1.55', '1.99', '1.90', '0.06']  C=Ση²=13.70
+   两段式拟合（η 取中位数）：η_f=0.73  σ_c=9.00  R²=0.990
+------------------------------------------------------------------------------------------
+ aggregator = trimmed
+   σ_rel=  0.5  η_i=['0.06', '1.62', '0.69', '1.58', '1.62', '0.06']  C=Ση²=8.23
+   σ_rel=  1.0  η_i=['0.06', '1.63', '0.72', '1.58', '1.62', '0.06']  C=Ση²=8.32
+   σ_rel=  2.0  η_i=['0.08', '1.64', '0.77', '1.61', '1.62', '0.06']  C=Ση²=8.51
+   σ_rel=  4.0  η_i=['0.14', '1.64', '0.79', '1.61', '1.62', '0.06']  C=Ση²=8.56
+   σ_rel=  8.0  η_i=['0.48', '1.67', '0.70', '1.62', '1.54', '0.06']  C=Ση²=8.48
+   σ_rel= 16.0  η_i=['1.22', '1.49', '1.05', '1.92', '1.76', '0.06']  C=Ση²=11.61
+   两段式拟合（η 取中位数）：η_f=0.70  σ_c=12.00  R²=0.854
+------------------------------------------------------------------------------------------
+ aggregator = krum
+   σ_rel=  0.5  η_i=['0.44', '1.67', '0.84', '1.63', '1.67', '0.06']  C=Ση²=9.11
+   σ_rel=  1.0  η_i=['0.45', '1.67', '0.84', '1.63', '1.67', '0.06']  C=Ση²=9.12
+   σ_rel=  2.0  η_i=['0.42', '1.67', '0.84', '1.63', '1.67', '0.06']  C=Ση²=9.09
+   σ_rel=  4.0  η_i=['0.32', '1.67', '0.79', '1.64', '1.67', '0.06']  C=Ση²=8.99
+   σ_rel=  8.0  η_i=['0.11', '1.67', '0.86', '1.62', '1.54', '0.06']  C=Ση²=8.52
+   σ_rel= 16.0  η_i=['0.51', '1.54', '1.05', '1.71', '1.54', '0.06']  C=Ση²=9.03
+   两段式拟合（η 取中位数）：η_f=0.81  σ_c=20.00  R²=0.919
+
+ 判读：形状不变 = 各聚合器均为『地板 + 亚线性恢复』两段式（R² 高、η_f 同量级、
+       σ_c 落在探测区间内）；c 变 = η_f/η_i 水平随聚合器不同。
+================================================================================================
+ R3-B：聚合器替换攻击网格 dataset=CIFAR10 K=6 5轮×5种子
+ 起始 acc=0.6074。σ_rel∈[0.5, 1.0, 2.0] κ∈[0.25, 2.0] 策略=['OURS', 'Q25', 'W25'] 聚合器=['median', 'trimmed', 'krum']
+================================================================================================
+------------------------------------------------------------------------------------------------
+ aggregator=median  NONE 对照 final_acc=0.6135
+ σ_rel=0.5 κ=0.25  C/Γ=3.75  η_i=['0.06', '1.63', '0.70', '1.58', '1.62', '0.06']
+    OURS drop=+0.0042 malflg= 18.0% rdet= 56.0%
+     Q25 drop=+0.0153 malflg= 15.3% rdet= 64.0%
+     W25 drop=-0.0021 malflg= 17.3% rdet= 72.0%
+ σ_rel=0.5 κ=2.00  C/Γ=0.47  η_i=['0.06', '1.63', '0.70', '1.58', '1.62', '0.06']
+    OURS drop=-0.0009 malflg= 48.0% rdet= 84.0%
+     Q25 drop=+0.0063 malflg= 66.7% rdet=100.0%
+     W25 drop=+0.0003 malflg=  7.3% rdet= 36.0%
+ σ_rel=1.0 κ=0.25  C/Γ=3.80  η_i=['0.06', '1.64', '0.72', '1.60', '1.62', '0.06']
+    OURS drop=+0.0071 malflg= 15.3% rdet= 48.0%
+     Q25 drop=+0.0140 malflg= 16.0% rdet= 56.0%
+     W25 drop=+0.0131 malflg= 12.7% rdet= 64.0%
+ σ_rel=1.0 κ=2.00  C/Γ=0.47  η_i=['0.06', '1.64', '0.72', '1.60', '1.62', '0.06']
+    OURS drop=+0.0064 malflg= 46.0% rdet= 76.0%
+     Q25 drop=+0.0065 malflg= 64.7% rdet=100.0%
+     W25 drop=+0.0254 malflg= 18.0% rdet= 60.0%
+ σ_rel=2.0 κ=0.25  C/Γ=3.85  η_i=['0.13', '1.64', '0.77', '1.61', '1.62', '0.06']
+    OURS drop=+0.0165 malflg= 14.7% rdet= 56.0%
+     Q25 drop=+0.0212 malflg= 13.3% rdet= 52.0%
+     W25 drop=+0.0236 malflg= 14.0% rdet= 52.0%
+ σ_rel=2.0 κ=2.00  C/Γ=0.48  η_i=['0.13', '1.64', '0.77', '1.61', '1.62', '0.06']
+    OURS drop=+0.0011 malflg= 49.3% rdet= 88.0%
+     Q25 drop=+0.0180 malflg= 62.0% rdet=100.0%
+     W25 drop=+0.0397 malflg= 43.3% rdet= 76.0%
+
+------------------------------------------------------------------------------------------------
+ aggregator=trimmed  NONE 对照 final_acc=0.6153
+ σ_rel=0.5 κ=0.25  C/Γ=3.72  η_i=['0.06', '1.62', '0.69', '1.58', '1.62', '0.06']
+    OURS drop=+0.0127 malflg= 15.3% rdet= 52.0%
+     Q25 drop=+0.0167 malflg= 13.3% rdet= 44.0%
+     W25 drop=+0.0102 malflg= 10.0% rdet= 52.0%
+ σ_rel=0.5 κ=2.00  C/Γ=0.47  η_i=['0.06', '1.62', '0.69', '1.58', '1.62', '0.06']
+    OURS drop=-0.0031 malflg= 50.0% rdet= 92.0%
+     Q25 drop=+0.0089 malflg= 58.0% rdet= 92.0%
+     W25 drop=+0.0059 malflg= 12.7% rdet= 56.0%
+ σ_rel=1.0 κ=0.25  C/Γ=3.76  η_i=['0.06', '1.63', '0.72', '1.58', '1.62', '0.06']
+    OURS drop=+0.0159 malflg= 14.0% rdet= 40.0%
+     Q25 drop=+0.0194 malflg= 12.0% rdet= 44.0%
+     W25 drop=+0.0234 malflg=  9.3% rdet= 40.0%
+ σ_rel=1.0 κ=2.00  C/Γ=0.47  η_i=['0.06', '1.63', '0.72', '1.58', '1.62', '0.06']
+    OURS drop=+0.0191 malflg= 42.7% rdet= 76.0%
+     Q25 drop=+0.0140 malflg= 62.7% rdet=100.0%
+     W25 drop=+0.0300 malflg= 10.0% rdet= 44.0%
+ σ_rel=2.0 κ=0.25  C/Γ=3.85  η_i=['0.08', '1.64', '0.77', '1.61', '1.62', '0.06']
+    OURS drop=+0.0248 malflg= 10.7% rdet= 32.0%
+     Q25 drop=+0.0220 malflg= 12.0% rdet= 48.0%
+     W25 drop=+0.0276 malflg= 12.0% rdet= 56.0%
+ σ_rel=2.0 κ=2.00  C/Γ=0.48  η_i=['0.08', '1.64', '0.77', '1.61', '1.62', '0.06']
+    OURS drop=+0.0250 malflg= 38.7% rdet= 72.0%
+     Q25 drop=+0.0296 malflg= 56.7% rdet= 92.0%
+     W25 drop=+0.0791 malflg= 51.3% rdet= 96.0%
+
+------------------------------------------------------------------------------------------------
+ aggregator=krum  NONE 对照 final_acc=0.5782
+ σ_rel=0.5 κ=0.25  C/Γ=4.12  η_i=['0.44', '1.67', '0.84', '1.63', '1.67', '0.06']
+    OURS drop=-0.0152 malflg= 12.0% rdet= 44.0%
+     Q25 drop=-0.0122 malflg=  8.7% rdet= 36.0%
+     W25 drop=-0.0100 malflg= 10.7% rdet= 36.0%
+ σ_rel=0.5 κ=2.00  C/Γ=0.52  η_i=['0.44', '1.67', '0.84', '1.63', '1.67', '0.06']
+    OURS drop=-0.0142 malflg= 42.0% rdet= 64.0%
+     Q25 drop=-0.0115 malflg= 57.3% rdet= 84.0%
+     W25 drop=-0.0100 malflg= 16.0% rdet= 52.0%
+ σ_rel=1.0 κ=0.25  C/Γ=4.13  η_i=['0.45', '1.67', '0.84', '1.63', '1.67', '0.06']
+    OURS drop=-0.0080 malflg= 18.7% rdet= 64.0%
+     Q25 drop=-0.0074 malflg= 15.3% rdet= 52.0%
+     W25 drop=-0.0072 malflg= 12.0% rdet= 40.0%
+ σ_rel=1.0 κ=2.00  C/Γ=0.52  η_i=['0.45', '1.67', '0.84', '1.63', '1.67', '0.06']
+    OURS drop=-0.0071 malflg= 48.0% rdet= 84.0%
+     Q25 drop=-0.0097 malflg= 65.3% rdet=100.0%
+     W25 drop=-0.0083 malflg= 14.7% rdet= 52.0%
+ σ_rel=2.0 κ=0.25  C/Γ=4.11  η_i=['0.42', '1.67', '0.84', '1.63', '1.67', '0.06']
+    OURS drop=+0.0117 malflg= 10.0% rdet= 48.0%
+     Q25 drop=+0.0078 malflg= 16.0% rdet= 60.0%
+     W25 drop=+0.0070 malflg= 10.7% rdet= 40.0%
+ σ_rel=2.0 κ=2.00  C/Γ=0.51  η_i=['0.42', '1.67', '0.84', '1.63', '1.67', '0.06']
+    OURS drop=+0.0099 malflg= 40.7% rdet= 76.0%
+     Q25 drop=+0.0067 malflg= 68.7% rdet=100.0%
+     W25 drop=+0.0043 malflg= 45.3% rdet= 72.0%
+
+ 汇总：OURS−Q25 损伤差（正=OURS 优）
+   median: ['σ0.5/κ0.25:-0.0111', 'σ0.5/κ2.00:-0.0071', 'σ1.0/κ0.25:-0.0070', 'σ1.0/κ2.00:-0.0000', 'σ2.0/κ0.25:-0.0047', 'σ2.0/κ2.00:-0.0170']
+   trimmed: ['σ0.5/κ0.25:-0.0039', 'σ0.5/κ2.00:-0.0120', 'σ1.0/κ0.25:-0.0035', 'σ1.0/κ2.00:+0.0051', 'σ2.0/κ0.25:+0.0028', 'σ2.0/κ2.00:-0.0046']
+   krum: ['σ0.5/κ0.25:-0.0030', 'σ0.5/κ2.00:-0.0027', 'σ1.0/κ0.25:-0.0006', 'σ1.0/κ2.00:+0.0026', 'σ2.0/κ0.25:+0.0039', 'σ2.0/κ2.00:+0.0032']
+================================================================================================
+ R3-B：聚合器替换攻击网格 dataset=CIFAR10 K=6 5轮×5种子
+ 起始 acc=0.6074。σ_rel∈[0.5, 1.0, 2.0] κ∈[0.25, 2.0] 策略=['OURS', 'Q25', 'W25'] 聚合器=['median', 'trimmed', 'krum']
+================================================================================================
+------------------------------------------------------------------------------------------------
+ aggregator=median  NONE 对照 final_acc=0.6135
+ σ_rel=0.5 κ=0.25  C/Γ=3.75  η_i=['0.06', '1.63', '0.70', '1.58', '1.62', '0.06']
+    OURS drop=+0.0042 malflg= 18.0% rdet= 56.0%
+    OURS drop=+0.0042 malflg= 18.0% rdet= 56.0%
+    OURS drop=+0.0042 malflg= 18.0% rdet= 56.0%
+    OURS drop=+0.0042 malflg= 18.0% rdet= 56.0%
+    OURS drop=+0.0042 malflg= 18.0% rdet= 56.0%
+     Q25 drop=+0.0153 malflg= 15.3% rdet= 64.0%
+     Q25 drop=+0.0153 malflg= 15.3% rdet= 64.0%
+     Q25 drop=+0.0153 malflg= 15.3% rdet= 64.0%
+     Q25 drop=+0.0153 malflg= 15.3% rdet= 64.0%
+     Q25 drop=+0.0153 malflg= 15.3% rdet= 64.0%
+     W25 drop=-0.0021 malflg= 17.3% rdet= 72.0%
+     W25 drop=-0.0021 malflg= 17.3% rdet= 72.0%
+     W25 drop=-0.0021 malflg= 17.3% rdet= 72.0%
+     W25 drop=-0.0021 malflg= 17.3% rdet= 72.0%
+     W25 drop=-0.0021 malflg= 17.3% rdet= 72.0%
+ σ_rel=0.5 κ=2.00  C/Γ=0.47  η_i=['0.06', '1.63', '0.70', '1.58', '1.62', '0.06']
+    OURS drop=-0.0009 malflg= 48.0% rdet= 84.0%
+    OURS drop=-0.0009 malflg= 48.0% rdet= 84.0%
+    OURS drop=-0.0009 malflg= 48.0% rdet= 84.0%
+    OURS drop=-0.0009 malflg= 48.0% rdet= 84.0%
+    OURS drop=-0.0009 malflg= 48.0% rdet= 84.0%
+     Q25 drop=+0.0063 malflg= 66.7% rdet=100.0%
+     Q25 drop=+0.0063 malflg= 66.7% rdet=100.0%
+     Q25 drop=+0.0063 malflg= 66.7% rdet=100.0%
+     Q25 drop=+0.0063 malflg= 66.7% rdet=100.0%
+     Q25 drop=+0.0063 malflg= 66.7% rdet=100.0%
+     W25 drop=+0.0003 malflg=  7.3% rdet= 36.0%
+     W25 drop=+0.0003 malflg=  7.3% rdet= 36.0%
+     W25 drop=+0.0003 malflg=  7.3% rdet= 36.0%
+     W25 drop=+0.0003 malflg=  7.3% rdet= 36.0%
+     W25 drop=+0.0003 malflg=  7.3% rdet= 36.0%
+ σ_rel=1.0 κ=0.25  C/Γ=3.80  η_i=['0.06', '1.64', '0.72', '1.60', '1.62', '0.06']
+    OURS drop=+0.0071 malflg= 15.3% rdet= 48.0%
+    OURS drop=+0.0071 malflg= 15.3% rdet= 48.0%
+    OURS drop=+0.0071 malflg= 15.3% rdet= 48.0%
+    OURS drop=+0.0071 malflg= 15.3% rdet= 48.0%
+    OURS drop=+0.0071 malflg= 15.3% rdet= 48.0%
+     Q25 drop=+0.0140 malflg= 16.0% rdet= 56.0%
+     Q25 drop=+0.0140 malflg= 16.0% rdet= 56.0%
+     Q25 drop=+0.0140 malflg= 16.0% rdet= 56.0%
+     Q25 drop=+0.0140 malflg= 16.0% rdet= 56.0%
+     Q25 drop=+0.0140 malflg= 16.0% rdet= 56.0%
+     W25 drop=+0.0131 malflg= 12.7% rdet= 64.0%
+     W25 drop=+0.0131 malflg= 12.7% rdet= 64.0%
+     W25 drop=+0.0131 malflg= 12.7% rdet= 64.0%
+     W25 drop=+0.0131 malflg= 12.7% rdet= 64.0%
+     W25 drop=+0.0131 malflg= 12.7% rdet= 64.0%
+ σ_rel=1.0 κ=2.00  C/Γ=0.47  η_i=['0.06', '1.64', '0.72', '1.60', '1.62', '0.06']
+    OURS drop=+0.0064 malflg= 46.0% rdet= 76.0%
+    OURS drop=+0.0064 malflg= 46.0% rdet= 76.0%
+    OURS drop=+0.0064 malflg= 46.0% rdet= 76.0%
+    OURS drop=+0.0064 malflg= 46.0% rdet= 76.0%
+    OURS drop=+0.0064 malflg= 46.0% rdet= 76.0%
+     Q25 drop=+0.0065 malflg= 64.7% rdet=100.0%
+     Q25 drop=+0.0065 malflg= 64.7% rdet=100.0%
+     Q25 drop=+0.0065 malflg= 64.7% rdet=100.0%
+     Q25 drop=+0.0065 malflg= 64.7% rdet=100.0%
+     Q25 drop=+0.0065 malflg= 64.7% rdet=100.0%
+     W25 drop=+0.0254 malflg= 18.0% rdet= 60.0%
+     W25 drop=+0.0254 malflg= 18.0% rdet= 60.0%
+     W25 drop=+0.0254 malflg= 18.0% rdet= 60.0%
+     W25 drop=+0.0254 malflg= 18.0% rdet= 60.0%
+     W25 drop=+0.0254 malflg= 18.0% rdet= 60.0%
+ σ_rel=2.0 κ=0.25  C/Γ=3.85  η_i=['0.13', '1.64', '0.77', '1.61', '1.62', '0.06']
+    OURS drop=+0.0165 malflg= 14.7% rdet= 56.0%
+    OURS drop=+0.0165 malflg= 14.7% rdet= 56.0%
+    OURS drop=+0.0165 malflg= 14.7% rdet= 56.0%
+    OURS drop=+0.0165 malflg= 14.7% rdet= 56.0%
+    OURS drop=+0.0165 malflg= 14.7% rdet= 56.0%
+     Q25 drop=+0.0212 malflg= 13.3% rdet= 52.0%
+     Q25 drop=+0.0212 malflg= 13.3% rdet= 52.0%
+     Q25 drop=+0.0212 malflg= 13.3% rdet= 52.0%
+     Q25 drop=+0.0212 malflg= 13.3% rdet= 52.0%
+     Q25 drop=+0.0212 malflg= 13.3% rdet= 52.0%
+     W25 drop=+0.0236 malflg= 14.0% rdet= 52.0%
+     W25 drop=+0.0236 malflg= 14.0% rdet= 52.0%
+     W25 drop=+0.0236 malflg= 14.0% rdet= 52.0%
+     W25 drop=+0.0236 malflg= 14.0% rdet= 52.0%
+     W25 drop=+0.0236 malflg= 14.0% rdet= 52.0%
+ σ_rel=2.0 κ=2.00  C/Γ=0.48  η_i=['0.13', '1.64', '0.77', '1.61', '1.62', '0.06']
+    OURS drop=+0.0011 malflg= 49.3% rdet= 88.0%
+    OURS drop=+0.0011 malflg= 49.3% rdet= 88.0%
+    OURS drop=+0.0011 malflg= 49.3% rdet= 88.0%
+    OURS drop=+0.0011 malflg= 49.3% rdet= 88.0%
+    OURS drop=+0.0011 malflg= 49.3% rdet= 88.0%
+     Q25 drop=+0.0180 malflg= 62.0% rdet=100.0%
+     Q25 drop=+0.0180 malflg= 62.0% rdet=100.0%
+     Q25 drop=+0.0180 malflg= 62.0% rdet=100.0%
+     Q25 drop=+0.0180 malflg= 62.0% rdet=100.0%
+     Q25 drop=+0.0180 malflg= 62.0% rdet=100.0%
+     W25 drop=+0.0397 malflg= 43.3% rdet= 76.0%
+     W25 drop=+0.0397 malflg= 43.3% rdet= 76.0%
+     W25 drop=+0.0397 malflg= 43.3% rdet= 76.0%
+     W25 drop=+0.0397 malflg= 43.3% rdet= 76.0%
+     W25 drop=+0.0397 malflg= 43.3% rdet= 76.0%
+
+------------------------------------------------------------------------------------------------
+ aggregator=trimmed  NONE 对照 final_acc=0.6153
+ σ_rel=0.5 κ=0.25  C/Γ=3.72  η_i=['0.06', '1.62', '0.69', '1.58', '1.62', '0.06']
+    OURS drop=+0.0127 malflg= 15.3% rdet= 52.0%
+    OURS drop=+0.0127 malflg= 15.3% rdet= 52.0%
+    OURS drop=+0.0127 malflg= 15.3% rdet= 52.0%
+    OURS drop=+0.0127 malflg= 15.3% rdet= 52.0%
+    OURS drop=+0.0127 malflg= 15.3% rdet= 52.0%
+     Q25 drop=+0.0167 malflg= 13.3% rdet= 44.0%
+     Q25 drop=+0.0167 malflg= 13.3% rdet= 44.0%
+     Q25 drop=+0.0167 malflg= 13.3% rdet= 44.0%
+     Q25 drop=+0.0167 malflg= 13.3% rdet= 44.0%
+     Q25 drop=+0.0167 malflg= 13.3% rdet= 44.0%
+     W25 drop=+0.0102 malflg= 10.0% rdet= 52.0%
+     W25 drop=+0.0102 malflg= 10.0% rdet= 52.0%
+     W25 drop=+0.0102 malflg= 10.0% rdet= 52.0%
+     W25 drop=+0.0102 malflg= 10.0% rdet= 52.0%
+     W25 drop=+0.0102 malflg= 10.0% rdet= 52.0%
+ σ_rel=0.5 κ=2.00  C/Γ=0.47  η_i=['0.06', '1.62', '0.69', '1.58', '1.62', '0.06']
+    OURS drop=-0.0031 malflg= 50.0% rdet= 92.0%
+    OURS drop=-0.0031 malflg= 50.0% rdet= 92.0%
+    OURS drop=-0.0031 malflg= 50.0% rdet= 92.0%
+    OURS drop=-0.0031 malflg= 50.0% rdet= 92.0%
+    OURS drop=-0.0031 malflg= 50.0% rdet= 92.0%
+     Q25 drop=+0.0089 malflg= 58.0% rdet= 92.0%
+     Q25 drop=+0.0089 malflg= 58.0% rdet= 92.0%
+     Q25 drop=+0.0089 malflg= 58.0% rdet= 92.0%
+     Q25 drop=+0.0089 malflg= 58.0% rdet= 92.0%
+     Q25 drop=+0.0089 malflg= 58.0% rdet= 92.0%
+     W25 drop=+0.0059 malflg= 12.7% rdet= 56.0%
+     W25 drop=+0.0059 malflg= 12.7% rdet= 56.0%
+     W25 drop=+0.0059 malflg= 12.7% rdet= 56.0%
+     W25 drop=+0.0059 malflg= 12.7% rdet= 56.0%
+     W25 drop=+0.0059 malflg= 12.7% rdet= 56.0%
+ σ_rel=1.0 κ=0.25  C/Γ=3.76  η_i=['0.06', '1.63', '0.72', '1.58', '1.62', '0.06']
+    OURS drop=+0.0159 malflg= 14.0% rdet= 40.0%
+    OURS drop=+0.0159 malflg= 14.0% rdet= 40.0%
+    OURS drop=+0.0159 malflg= 14.0% rdet= 40.0%
+    OURS drop=+0.0159 malflg= 14.0% rdet= 40.0%
+    OURS drop=+0.0159 malflg= 14.0% rdet= 40.0%
+     Q25 drop=+0.0194 malflg= 12.0% rdet= 44.0%
+     Q25 drop=+0.0194 malflg= 12.0% rdet= 44.0%
+     Q25 drop=+0.0194 malflg= 12.0% rdet= 44.0%
+     Q25 drop=+0.0194 malflg= 12.0% rdet= 44.0%
+     Q25 drop=+0.0194 malflg= 12.0% rdet= 44.0%
+     W25 drop=+0.0234 malflg=  9.3% rdet= 40.0%
+     W25 drop=+0.0234 malflg=  9.3% rdet= 40.0%
+     W25 drop=+0.0234 malflg=  9.3% rdet= 40.0%
+     W25 drop=+0.0234 malflg=  9.3% rdet= 40.0%
+     W25 drop=+0.0234 malflg=  9.3% rdet= 40.0%
+ σ_rel=1.0 κ=2.00  C/Γ=0.47  η_i=['0.06', '1.63', '0.72', '1.58', '1.62', '0.06']
+    OURS drop=+0.0191 malflg= 42.7% rdet= 76.0%
+    OURS drop=+0.0191 malflg= 42.7% rdet= 76.0%
+    OURS drop=+0.0191 malflg= 42.7% rdet= 76.0%
+    OURS drop=+0.0191 malflg= 42.7% rdet= 76.0%
+    OURS drop=+0.0191 malflg= 42.7% rdet= 76.0%
+     Q25 drop=+0.0140 malflg= 62.7% rdet=100.0%
+     Q25 drop=+0.0140 malflg= 62.7% rdet=100.0%
+     Q25 drop=+0.0140 malflg= 62.7% rdet=100.0%
+     Q25 drop=+0.0140 malflg= 62.7% rdet=100.0%
+     Q25 drop=+0.0140 malflg= 62.7% rdet=100.0%
+     W25 drop=+0.0300 malflg= 10.0% rdet= 44.0%
+     W25 drop=+0.0300 malflg= 10.0% rdet= 44.0%
+     W25 drop=+0.0300 malflg= 10.0% rdet= 44.0%
+     W25 drop=+0.0300 malflg= 10.0% rdet= 44.0%
+     W25 drop=+0.0300 malflg= 10.0% rdet= 44.0%
+ σ_rel=2.0 κ=0.25  C/Γ=3.85  η_i=['0.08', '1.64', '0.77', '1.61', '1.62', '0.06']
+    OURS drop=+0.0248 malflg= 10.7% rdet= 32.0%
+    OURS drop=+0.0248 malflg= 10.7% rdet= 32.0%
+    OURS drop=+0.0248 malflg= 10.7% rdet= 32.0%
+    OURS drop=+0.0248 malflg= 10.7% rdet= 32.0%
+    OURS drop=+0.0248 malflg= 10.7% rdet= 32.0%
+     Q25 drop=+0.0220 malflg= 12.0% rdet= 48.0%
+     Q25 drop=+0.0220 malflg= 12.0% rdet= 48.0%
+     Q25 drop=+0.0220 malflg= 12.0% rdet= 48.0%
+     Q25 drop=+0.0220 malflg= 12.0% rdet= 48.0%
+     Q25 drop=+0.0220 malflg= 12.0% rdet= 48.0%
+     W25 drop=+0.0276 malflg= 12.0% rdet= 56.0%
+     W25 drop=+0.0276 malflg= 12.0% rdet= 56.0%
+     W25 drop=+0.0276 malflg= 12.0% rdet= 56.0%
+     W25 drop=+0.0276 malflg= 12.0% rdet= 56.0%
+     W25 drop=+0.0276 malflg= 12.0% rdet= 56.0%
+ σ_rel=2.0 κ=2.00  C/Γ=0.48  η_i=['0.08', '1.64', '0.77', '1.61', '1.62', '0.06']
+    OURS drop=+0.0250 malflg= 38.7% rdet= 72.0%
+    OURS drop=+0.0250 malflg= 38.7% rdet= 72.0%
+    OURS drop=+0.0250 malflg= 38.7% rdet= 72.0%
+    OURS drop=+0.0250 malflg= 38.7% rdet= 72.0%
+    OURS drop=+0.0250 malflg= 38.7% rdet= 72.0%
+     Q25 drop=+0.0296 malflg= 56.7% rdet= 92.0%
+     Q25 drop=+0.0296 malflg= 56.7% rdet= 92.0%
+     Q25 drop=+0.0296 malflg= 56.7% rdet= 92.0%
+     Q25 drop=+0.0296 malflg= 56.7% rdet= 92.0%
+     Q25 drop=+0.0296 malflg= 56.7% rdet= 92.0%
+     W25 drop=+0.0791 malflg= 51.3% rdet= 96.0%
+     W25 drop=+0.0791 malflg= 51.3% rdet= 96.0%
+     W25 drop=+0.0791 malflg= 51.3% rdet= 96.0%
+     W25 drop=+0.0791 malflg= 51.3% rdet= 96.0%
+     W25 drop=+0.0791 malflg= 51.3% rdet= 96.0%
+
+------------------------------------------------------------------------------------------------
+ aggregator=krum  NONE 对照 final_acc=0.5782
+ σ_rel=0.5 κ=0.25  C/Γ=4.12  η_i=['0.44', '1.67', '0.84', '1.63', '1.67', '0.06']
+    OURS drop=-0.0152 malflg= 12.0% rdet= 44.0%
+    OURS drop=-0.0152 malflg= 12.0% rdet= 44.0%
+    OURS drop=-0.0152 malflg= 12.0% rdet= 44.0%
+    OURS drop=-0.0152 malflg= 12.0% rdet= 44.0%
+    OURS drop=-0.0152 malflg= 12.0% rdet= 44.0%
+     Q25 drop=-0.0122 malflg=  8.7% rdet= 36.0%
+     Q25 drop=-0.0122 malflg=  8.7% rdet= 36.0%
+     Q25 drop=-0.0122 malflg=  8.7% rdet= 36.0%
+     Q25 drop=-0.0122 malflg=  8.7% rdet= 36.0%
+     Q25 drop=-0.0122 malflg=  8.7% rdet= 36.0%
+     W25 drop=-0.0100 malflg= 10.7% rdet= 36.0%
+     W25 drop=-0.0100 malflg= 10.7% rdet= 36.0%
+     W25 drop=-0.0100 malflg= 10.7% rdet= 36.0%
+     W25 drop=-0.0100 malflg= 10.7% rdet= 36.0%
+     W25 drop=-0.0100 malflg= 10.7% rdet= 36.0%
+ σ_rel=0.5 κ=2.00  C/Γ=0.52  η_i=['0.44', '1.67', '0.84', '1.63', '1.67', '0.06']
+    OURS drop=-0.0142 malflg= 42.0% rdet= 64.0%
+    OURS drop=-0.0142 malflg= 42.0% rdet= 64.0%
+    OURS drop=-0.0142 malflg= 42.0% rdet= 64.0%
+    OURS drop=-0.0142 malflg= 42.0% rdet= 64.0%
+    OURS drop=-0.0142 malflg= 42.0% rdet= 64.0%
+     Q25 drop=-0.0115 malflg= 57.3% rdet= 84.0%
+     Q25 drop=-0.0115 malflg= 57.3% rdet= 84.0%
+     Q25 drop=-0.0115 malflg= 57.3% rdet= 84.0%
+     Q25 drop=-0.0115 malflg= 57.3% rdet= 84.0%
+     Q25 drop=-0.0115 malflg= 57.3% rdet= 84.0%
+     W25 drop=-0.0100 malflg= 16.0% rdet= 52.0%
+     W25 drop=-0.0100 malflg= 16.0% rdet= 52.0%
+     W25 drop=-0.0100 malflg= 16.0% rdet= 52.0%
+     W25 drop=-0.0100 malflg= 16.0% rdet= 52.0%
+     W25 drop=-0.0100 malflg= 16.0% rdet= 52.0%
+ σ_rel=1.0 κ=0.25  C/Γ=4.13  η_i=['0.45', '1.67', '0.84', '1.63', '1.67', '0.06']
+    OURS drop=-0.0080 malflg= 18.7% rdet= 64.0%
+    OURS drop=-0.0080 malflg= 18.7% rdet= 64.0%
+    OURS drop=-0.0080 malflg= 18.7% rdet= 64.0%
+    OURS drop=-0.0080 malflg= 18.7% rdet= 64.0%
+    OURS drop=-0.0080 malflg= 18.7% rdet= 64.0%
+     Q25 drop=-0.0074 malflg= 15.3% rdet= 52.0%
+     Q25 drop=-0.0074 malflg= 15.3% rdet= 52.0%
+     Q25 drop=-0.0074 malflg= 15.3% rdet= 52.0%
+     Q25 drop=-0.0074 malflg= 15.3% rdet= 52.0%
+     Q25 drop=-0.0074 malflg= 15.3% rdet= 52.0%
+     W25 drop=-0.0072 malflg= 12.0% rdet= 40.0%
+     W25 drop=-0.0072 malflg= 12.0% rdet= 40.0%
+     W25 drop=-0.0072 malflg= 12.0% rdet= 40.0%
+     W25 drop=-0.0072 malflg= 12.0% rdet= 40.0%
+     W25 drop=-0.0072 malflg= 12.0% rdet= 40.0%
+ σ_rel=1.0 κ=2.00  C/Γ=0.52  η_i=['0.45', '1.67', '0.84', '1.63', '1.67', '0.06']
+    OURS drop=-0.0071 malflg= 48.0% rdet= 84.0%
+    OURS drop=-0.0071 malflg= 48.0% rdet= 84.0%
+    OURS drop=-0.0071 malflg= 48.0% rdet= 84.0%
+    OURS drop=-0.0071 malflg= 48.0% rdet= 84.0%
+    OURS drop=-0.0071 malflg= 48.0% rdet= 84.0%
+     Q25 drop=-0.0097 malflg= 65.3% rdet=100.0%
+     Q25 drop=-0.0097 malflg= 65.3% rdet=100.0%
+     Q25 drop=-0.0097 malflg= 65.3% rdet=100.0%
+     Q25 drop=-0.0097 malflg= 65.3% rdet=100.0%
+     Q25 drop=-0.0097 malflg= 65.3% rdet=100.0%
+     W25 drop=-0.0083 malflg= 14.7% rdet= 52.0%
+     W25 drop=-0.0083 malflg= 14.7% rdet= 52.0%
+     W25 drop=-0.0083 malflg= 14.7% rdet= 52.0%
+     W25 drop=-0.0083 malflg= 14.7% rdet= 52.0%
+     W25 drop=-0.0083 malflg= 14.7% rdet= 52.0%
+ σ_rel=2.0 κ=0.25  C/Γ=4.11  η_i=['0.42', '1.67', '0.84', '1.63', '1.67', '0.06']
+    OURS drop=+0.0117 malflg= 10.0% rdet= 48.0%
+    OURS drop=+0.0117 malflg= 10.0% rdet= 48.0%
+    OURS drop=+0.0117 malflg= 10.0% rdet= 48.0%
+    OURS drop=+0.0117 malflg= 10.0% rdet= 48.0%
+    OURS drop=+0.0117 malflg= 10.0% rdet= 48.0%
+     Q25 drop=+0.0078 malflg= 16.0% rdet= 60.0%
+     Q25 drop=+0.0078 malflg= 16.0% rdet= 60.0%
+     Q25 drop=+0.0078 malflg= 16.0% rdet= 60.0%
+     Q25 drop=+0.0078 malflg= 16.0% rdet= 60.0%
+     Q25 drop=+0.0078 malflg= 16.0% rdet= 60.0%
+     W25 drop=+0.0070 malflg= 10.7% rdet= 40.0%
+     W25 drop=+0.0070 malflg= 10.7% rdet= 40.0%
+     W25 drop=+0.0070 malflg= 10.7% rdet= 40.0%
+     W25 drop=+0.0070 malflg= 10.7% rdet= 40.0%
+     W25 drop=+0.0070 malflg= 10.7% rdet= 40.0%
+ σ_rel=2.0 κ=2.00  C/Γ=0.51  η_i=['0.42', '1.67', '0.84', '1.63', '1.67', '0.06']
+    OURS drop=+0.0099 malflg= 40.7% rdet= 76.0%
+    OURS drop=+0.0099 malflg= 40.7% rdet= 76.0%
+    OURS drop=+0.0099 malflg= 40.7% rdet= 76.0%
+    OURS drop=+0.0099 malflg= 40.7% rdet= 76.0%
+    OURS drop=+0.0099 malflg= 40.7% rdet= 76.0%
+     Q25 drop=+0.0067 malflg= 68.7% rdet=100.0%
+     Q25 drop=+0.0067 malflg= 68.7% rdet=100.0%
+     Q25 drop=+0.0067 malflg= 68.7% rdet=100.0%
+     Q25 drop=+0.0067 malflg= 68.7% rdet=100.0%
+     Q25 drop=+0.0067 malflg= 68.7% rdet=100.0%
+     W25 drop=+0.0043 malflg= 45.3% rdet= 72.0%
+     W25 drop=+0.0043 malflg= 45.3% rdet= 72.0%
+     W25 drop=+0.0043 malflg= 45.3% rdet= 72.0%
+     W25 drop=+0.0043 malflg= 45.3% rdet= 72.0%
+     W25 drop=+0.0043 malflg= 45.3% rdet= 72.0%
+
+ 汇总：OURS−Q25 损伤差（正=OURS 优）
+   median: ['σ0.5/κ0.25:-0.0111', 'σ0.5/κ2.00:-0.0071', 'σ1.0/κ0.25:-0.0070', 'σ1.0/κ2.00:-0.0000', 'σ2.0/κ0.25:-0.0047', 'σ2.0/κ2.00:-0.0170']
+   trimmed: ['σ0.5/κ0.25:-0.0039', 'σ0.5/κ2.00:-0.0120', 'σ1.0/κ0.25:-0.0035', 'σ1.0/κ2.00:+0.0051', 'σ2.0/κ0.25:+0.0028', 'σ2.0/κ2.00:-0.0046']
+   krum: ['σ0.5/κ0.25:-0.0030', 'σ0.5/κ2.00:-0.0027', 'σ1.0/κ0.25:-0.0006', 'σ1.0/κ2.00:+0.0026', 'σ2.0/κ0.25:+0.0039', 'σ2.0/κ2.00:+0.0032']
+==========================================================================================
+ R3-A：聚合器替换下的 η_max(σ) 两段式形状检验（无训练，探测）
+==========================================================================================
+------------------------------------------------------------------------------------------
+ aggregator = flame
+   σ_rel=  0.5  η_i=['11.99', '11.99', '11.99', '11.99', '11.99', '0.71']  C=Ση²=719.80
+   σ_rel=  1.0  η_i=['9.05', '2.38', '2.07', '1.69', '0.29', '0.65']  C=Ση²=95.29
+   σ_rel=  2.0  η_i=['5.35', '2.37', '2.72', '1.97', '0.30', '2.68']  C=Ση²=52.81
+   σ_rel=  4.0  η_i=['11.70', '4.53', '6.73', '7.90', '3.41', '7.47']  C=Ση²=332.45
+   σ_rel=  8.0  η_i=['11.99', '11.99', '11.99', '11.99', '11.99', '11.99']  C=Ση²=863.16
+   σ_rel= 16.0  η_i=['11.99', '11.99', '11.99', '11.99', '11.99', '11.99']  C=Ση²=863.16
+   两段式拟合（η 取中位数）：η_f=6.05  σ_c=8.00  R²=0.306
+
+ 判读：形状不变 = 各聚合器均为『地板 + 亚线性恢复』两段式（R² 高、η_f 同量级、
+       σ_c 落在探测区间内）；c 变 = η_f/η_i 水平随聚合器不同。
+================================================================================================
+ R3-B：聚合器替换攻击网格 dataset=CIFAR10 K=6 5轮×5种子
+ 起始 acc=0.6074。σ_rel∈[0.5, 1.0, 2.0] κ∈[0.25, 2.0] 策略=['OURS', 'Q25', 'W25'] 聚合器=['flame']
+================================================================================================
+------------------------------------------------------------------------------------------------
+ aggregator=flame  NONE 对照 final_acc=0.6098
+ σ_rel=0.5 κ=0.25  C/Γ=325.49  η_i=['11.99', '11.99', '11.99', '11.99', '11.99', '0.71']
+    OURS drop=+0.0128 malflg=  8.0% rdet= 20.0%
+    OURS drop=+0.0128 malflg=  8.0% rdet= 20.0%
+    OURS drop=+0.0128 malflg=  8.0% rdet= 20.0%
+    OURS drop=+0.0128 malflg=  8.0% rdet= 20.0%
+    OURS drop=+0.0128 malflg=  8.0% rdet= 20.0%
+     Q25 drop=+0.0284 malflg=  5.3% rdet= 12.0%
+     Q25 drop=+0.0284 malflg=  5.3% rdet= 12.0%
+     Q25 drop=+0.0284 malflg=  5.3% rdet= 12.0%
+     Q25 drop=+0.0284 malflg=  5.3% rdet= 12.0%
+     Q25 drop=+0.0284 malflg=  5.3% rdet= 12.0%
+     W25 drop=+0.0327 malflg=  0.7% rdet=  4.0%
+     W25 drop=+0.0327 malflg=  0.7% rdet=  4.0%
+     W25 drop=+0.0327 malflg=  0.7% rdet=  4.0%
+     W25 drop=+0.0327 malflg=  0.7% rdet=  4.0%
+     W25 drop=+0.0327 malflg=  0.7% rdet=  4.0%
+ σ_rel=0.5 κ=2.00  C/Γ=40.69  η_i=['11.99', '11.99', '11.99', '11.99', '11.99', '0.71']
+    OURS drop=+0.1233 malflg= 38.7% rdet= 40.0%
+    OURS drop=+0.1233 malflg= 38.7% rdet= 40.0%
+    OURS drop=+0.1233 malflg= 38.7% rdet= 40.0%
+    OURS drop=+0.1233 malflg= 38.7% rdet= 40.0%
+    OURS drop=+0.1233 malflg= 38.7% rdet= 40.0%
+     Q25 drop=+0.1148 malflg= 37.3% rdet= 40.0%
+     Q25 drop=+0.1148 malflg= 37.3% rdet= 40.0%
+     Q25 drop=+0.1148 malflg= 37.3% rdet= 40.0%
+     Q25 drop=+0.1148 malflg= 37.3% rdet= 40.0%
+     Q25 drop=+0.1148 malflg= 37.3% rdet= 40.0%
+     W25 drop=+0.1279 malflg= 40.0% rdet= 40.0%
+     W25 drop=+0.1279 malflg= 40.0% rdet= 40.0%
+     W25 drop=+0.1279 malflg= 40.0% rdet= 40.0%
+     W25 drop=+0.1279 malflg= 40.0% rdet= 40.0%
+     W25 drop=+0.1279 malflg= 40.0% rdet= 40.0%
+ σ_rel=1.0 κ=0.25  C/Γ=43.09  η_i=['9.05', '2.38', '2.07', '1.69', '0.29', '0.65']
+    OURS drop=+0.0161 malflg=  0.7% rdet=  4.0%
+    OURS drop=+0.0161 malflg=  0.7% rdet=  4.0%
+    OURS drop=+0.0161 malflg=  0.7% rdet=  4.0%
+    OURS drop=+0.0161 malflg=  0.7% rdet=  4.0%
+    OURS drop=+0.0161 malflg=  0.7% rdet=  4.0%
+     Q25 drop=+0.0157 malflg=  8.7% rdet= 32.0%
+     Q25 drop=+0.0157 malflg=  8.7% rdet= 32.0%
+     Q25 drop=+0.0157 malflg=  8.7% rdet= 32.0%
+     Q25 drop=+0.0157 malflg=  8.7% rdet= 32.0%
+     Q25 drop=+0.0157 malflg=  8.7% rdet= 32.0%
+     W25 drop=+0.0331 malflg=  0.0% rdet=  0.0%
+     W25 drop=+0.0331 malflg=  0.0% rdet=  0.0%
+     W25 drop=+0.0331 malflg=  0.0% rdet=  0.0%
+     W25 drop=+0.0331 malflg=  0.0% rdet=  0.0%
+     W25 drop=+0.0331 malflg=  0.0% rdet=  0.0%
+ σ_rel=1.0 κ=2.00  C/Γ=5.39  η_i=['9.05', '2.38', '2.07', '1.69', '0.29', '0.65']
+    OURS drop=+0.1070 malflg= 28.7% rdet= 40.0%
+    OURS drop=+0.1070 malflg= 28.7% rdet= 40.0%
+    OURS drop=+0.1070 malflg= 28.7% rdet= 40.0%
+    OURS drop=+0.1070 malflg= 28.7% rdet= 40.0%
+    OURS drop=+0.1070 malflg= 28.7% rdet= 40.0%
+     Q25 drop=+0.1058 malflg= 29.3% rdet= 40.0%
+     Q25 drop=+0.1058 malflg= 29.3% rdet= 40.0%
+     Q25 drop=+0.1058 malflg= 29.3% rdet= 40.0%
+     Q25 drop=+0.1058 malflg= 29.3% rdet= 40.0%
+     Q25 drop=+0.1058 malflg= 29.3% rdet= 40.0%
+     W25 drop=+0.1079 malflg= 16.7% rdet= 28.0%
+     W25 drop=+0.1079 malflg= 16.7% rdet= 28.0%
+     W25 drop=+0.1079 malflg= 16.7% rdet= 28.0%
+     W25 drop=+0.1079 malflg= 16.7% rdet= 28.0%
+     W25 drop=+0.1079 malflg= 16.7% rdet= 28.0%
+ σ_rel=2.0 κ=0.25  C/Γ=23.88  η_i=['5.35', '2.37', '2.72', '1.97', '0.30', '2.68']
+    OURS drop=+0.0318 malflg=  2.0% rdet=  8.0%
+    OURS drop=+0.0318 malflg=  2.0% rdet=  8.0%
+    OURS drop=+0.0318 malflg=  2.0% rdet=  8.0%
+    OURS drop=+0.0318 malflg=  2.0% rdet=  8.0%
+    OURS drop=+0.0318 malflg=  2.0% rdet=  8.0%
+     Q25 drop=+0.0388 malflg=  2.0% rdet=  8.0%
+     Q25 drop=+0.0388 malflg=  2.0% rdet=  8.0%
+     Q25 drop=+0.0388 malflg=  2.0% rdet=  8.0%
+     Q25 drop=+0.0388 malflg=  2.0% rdet=  8.0%
+     Q25 drop=+0.0388 malflg=  2.0% rdet=  8.0%
+     W25 drop=+0.0383 malflg=  0.7% rdet=  4.0%
+     W25 drop=+0.0383 malflg=  0.7% rdet=  4.0%
+     W25 drop=+0.0383 malflg=  0.7% rdet=  4.0%
+     W25 drop=+0.0383 malflg=  0.7% rdet=  4.0%
+     W25 drop=+0.0383 malflg=  0.7% rdet=  4.0%
+ σ_rel=2.0 κ=2.00  C/Γ=2.98  η_i=['5.35', '2.37', '2.72', '1.97', '0.30', '2.68']
+    OURS drop=+0.0942 malflg=  5.3% rdet= 20.0%
+    OURS drop=+0.0942 malflg=  5.3% rdet= 20.0%
+    OURS drop=+0.0942 malflg=  5.3% rdet= 20.0%
+    OURS drop=+0.0942 malflg=  5.3% rdet= 20.0%
+    OURS drop=+0.0942 malflg=  5.3% rdet= 20.0%
+     Q25 drop=+0.1060 malflg=  0.0% rdet=  0.0%
+     Q25 drop=+0.1060 malflg=  0.0% rdet=  0.0%
+     Q25 drop=+0.1060 malflg=  0.0% rdet=  0.0%
+     Q25 drop=+0.1060 malflg=  0.0% rdet=  0.0%
+     Q25 drop=+0.1060 malflg=  0.0% rdet=  0.0%
+     W25 drop=+0.1045 malflg=  0.0% rdet=  0.0%
+     W25 drop=+0.1045 malflg=  0.0% rdet=  0.0%
+     W25 drop=+0.1045 malflg=  0.0% rdet=  0.0%
+     W25 drop=+0.1045 malflg=  0.0% rdet=  0.0%
+     W25 drop=+0.1045 malflg=  0.0% rdet=  0.0%
+
+ 汇总：OURS−Q25 损伤差（正=OURS 优）
+   flame: ['σ0.5/κ0.25:-0.0156', 'σ0.5/κ2.00:+0.0085', 'σ1.0/κ0.25:+0.0004', 'σ1.0/κ2.00:+0.0012', 'σ2.0/κ0.25:-0.0070', 'σ2.0/κ2.00:-0.0118']

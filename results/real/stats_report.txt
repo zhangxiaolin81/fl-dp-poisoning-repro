@@ -1,0 +1,72 @@
+
+==============================================================================
+ CLAIM 1 — FashionMNIST inter-allocator difference (R2 / Table 2)
+==============================================================================
+ cells tested        : 12  (σ,κ)
+ paired comparisons  : 180
+ significant @0.05   : 2  (expected by chance ~5% = 9)
+ median p-value      : 0.557
+ worst-case |mean diff| (cell, pair, p, 95% CI):
+   σ=2.00 κ=2.00  H25 vs Q25 : |Δ|=0.389 pp, p=0.084, 95% CI[-0.008,0.748]pp covers0
+
+ PAPER LINE (suggested):
+   paired tests (n=10 seeds/cell) find no allocator whose hidden
+   accuracy drop differs significantly from another at α=0.05 in any
+   of the 12 (σ,κ) cells (max |mean difference| = 0.39 pp; 95% bootstrap
+   CI of the worst pairwise mean difference covers 0).
+
+==============================================================================
+ CLAIM 2 — CIFAR shej_sign sub-ε dip at σ=1 (R2c / Table 5)
+==============================================================================
+ per (strategy, κ): drop at σ=1 vs neighbours (paired)
+   OURS κ=0.5 : drop σ0.5=-0.0003  σ1=0.0023  σ2=0.0062
+          p(σ1<σ0.5)=0.160  p(σ1<σ2)=0.020
+          95% CI: σ0.5[-0.0019,0.0013] σ1[-0.0007,0.0053] σ2[0.0035,0.0093]
+   OURS κ=2.0 : drop σ0.5=-0.0011  σ1=0.0022  σ2=0.0077
+          p(σ1<σ0.5)=0.016  p(σ1<σ2)=0.049
+          95% CI: σ0.5[-0.0037,0.0013] σ1[-0.0001,0.0045] σ2[0.0031,0.0115]
+   Q25  κ=0.5 : drop σ0.5=0.0040  σ1=0.0026  σ2=0.0070
+          p(σ1<σ0.5)=0.287  p(σ1<σ2)=0.002
+          95% CI: σ0.5[0.0016,0.0064] σ1[0.0002,0.0048] σ2[0.0042,0.0100]
+   Q25  κ=2.0 : drop σ0.5=0.0002  σ1=0.0008  σ2=0.0117
+          p(σ1<σ0.5)=1.000  p(σ1<σ2)=0.004
+          95% CI: σ0.5[-0.0031,0.0031] σ1[-0.0028,0.0050] σ2[0.0059,0.0187]
+
+ PAPER LINE (suggested):
+   the σ=1 dip under shej_sign is not statistically distinguishable
+   from neighbouring σ levels (paired p>0.05; 95% CIs of per-seed drop
+   at σ=1 overlap those at σ=0.5 and σ=2), i.e. consistent with seed noise.
+
+==============================================================================
+ CLAIM 3 — CIFAR R3 per-cell OURS−Q25 damage within seed noise (|Δ|≤0.017)
+==============================================================================
+   median   σ=0.5 κ=0.25 : OURS−Q25 mean=-0.0111  CI[-0.0205,-0.0012]  p=0.188  EXCLUDES0
+   median   σ=0.5 κ=2.00 : OURS−Q25 mean=-0.0071  CI[-0.0163,0.0007]  p=0.188  cover0
+   median   σ=1.0 κ=0.25 : OURS−Q25 mean=-0.0070  CI[-0.0172,0.0033]  p=0.438  cover0
+   median   σ=1.0 κ=2.00 : OURS−Q25 mean=-0.0000  CI[-0.0127,0.0139]  p=1.000  cover0
+   median   σ=2.0 κ=0.25 : OURS−Q25 mean=-0.0047  CI[-0.0097,0.0028]  p=0.312  cover0
+   median   σ=2.0 κ=2.00 : OURS−Q25 mean=-0.0170  CI[-0.0273,-0.0071]  p=0.062  EXCLUDES0
+   trimmed  σ=0.5 κ=0.25 : OURS−Q25 mean=-0.0039  CI[-0.0153,0.0074]  p=0.688  cover0
+   trimmed  σ=0.5 κ=2.00 : OURS−Q25 mean=-0.0120  CI[-0.0271,-0.0029]  p=0.062  EXCLUDES0
+   trimmed  σ=1.0 κ=0.25 : OURS−Q25 mean=-0.0035  CI[-0.0229,0.0141]  p=1.000  cover0
+   trimmed  σ=1.0 κ=2.00 : OURS−Q25 mean=0.0051  CI[-0.0193,0.0314]  p=0.812  cover0
+   trimmed  σ=2.0 κ=0.25 : OURS−Q25 mean=0.0028  CI[-0.0109,0.0165]  p=0.750  cover0
+   trimmed  σ=2.0 κ=2.00 : OURS−Q25 mean=-0.0046  CI[-0.0456,0.0364]  p=1.000  cover0
+   krum     σ=0.5 κ=0.25 : OURS−Q25 mean=-0.0030  CI[-0.0066,0.0011]  p=0.312  cover0
+   krum     σ=0.5 κ=2.00 : OURS−Q25 mean=-0.0027  CI[-0.0064,0.0010]  p=0.312  cover0
+   krum     σ=1.0 κ=0.25 : OURS−Q25 mean=-0.0006  CI[-0.0040,0.0023]  p=0.812  cover0
+   krum     σ=1.0 κ=2.00 : OURS−Q25 mean=0.0026  CI[-0.0033,0.0105]  p=1.000  cover0
+   krum     σ=2.0 κ=0.25 : OURS−Q25 mean=0.0039  CI[0.0003,0.0074]  p=0.188  EXCLUDES0
+   krum     σ=2.0 κ=2.00 : OURS−Q25 mean=0.0032  CI[-0.0010,0.0074]  p=0.312  cover0
+
+ cells tested        : 18
+ 95% CI covers 0      : 14
+ max |mean difference| : 0.0170 (1.70 pp)
+   (at median σ=2.0 κ=2.00)
+
+ PAPER LINE (suggested, data-driven):
+   OURS−Q25 per-cell damage differences are small (max |Δ| = 1.70 pp;
+   median |Δ| across the 18 cells ≈ 1.70 pp). Paired Wilcoxon finds no
+   cell significant at α=0.05 (all p ≥ 0.062, underpowered at n=5 seeds),
+   but 4/18 bootstrap 95% CIs exclude 0, so we report magnitudes and
+   do NOT claim strict seed-noise containment of every per-cell difference.
